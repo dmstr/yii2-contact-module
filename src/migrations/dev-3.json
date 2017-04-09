@@ -1,0 +1,184 @@
+{
+  "title": "Anmeldung / Reservierung",
+  "type": "object",
+  "properties": {
+    "AnreiseZeit": {
+      "propertyOrder": 1,
+      "type": "string",
+      "title": "Anreise ca.:"
+    },
+    "AbreiseZeit": {
+      "propertyOrder": 1,
+      "type": "string",
+      "title": "Abreise ca.:"
+    },
+    "Anreise": {
+      "propertyOrder": 1,
+      "title": "Anreise mit:",
+      "type": "string",
+      "enum": [
+        "eigener PKW",
+        "Flug + Mietwagen",
+        "Flug + Öffentliche VM"
+      ],
+      "default": "eigener PKW"
+    },
+    "CustomerNo": {
+      "propertyOrder": 1,
+      "type": "string",
+      "minLength": 1,
+      "title": "Kunden-Nr."
+    },
+    "Company": {
+      "propertyOrder": 1,
+      "type": "string",
+      "minLength": 1,
+      "title": "Firma"
+    },
+    "Zip": {
+      "propertyOrder": 1,
+      "type": "integer",
+      "minLength": 1,
+      "title": "PLZ"
+    },
+    "Location": {
+      "propertyOrder": 1,
+      "type": "string",
+      "minLength": 1,
+      "title": "Ort"
+    },
+    "Street": {
+      "propertyOrder": 1,
+      "type": "string",
+      "title": "Straße/Hausnr."
+    },
+    "Anrede": {
+      "propertyOrder": 1,
+      "type": "string",
+      "enum": [
+        "Herr",
+        "Frau"
+      ]
+    },
+    "SNParticipant": {
+      "propertyOrder": 1,
+      "type": "string",
+      "minLength": 1,
+      "title": "Name Teilnehmer"
+    },
+    "FNParticipant": {
+      "propertyOrder": 1,
+      "type": "string",
+      "minLength": 1,
+      "title": "Vorname Teilnehmer"
+    },
+    "Function": {
+      "propertyOrder": 1,
+      "type": "string",
+      "title": "Funktion im Unternehmen"
+    },
+    "Email": {
+      "propertyOrder": 1,
+      "type": "string",
+      "format": "email",
+      "minLength": 1,
+      "title": "E-Mail Adresse"
+    },
+    "Phone": {
+      "propertyOrder": 1,
+      "type": "integer",
+      "format": "tel",
+      "default": "0123456789",
+      "title": "MOBILFUNK-NR (für die Erreichbarkeit vor Ort)"
+    },
+    "BrandsSold": {
+      "propertyOrder": 1,
+      "type": "array",
+      "title":"Ich/wir verkaufe/n derzeit:",
+      "format": "checkbox",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": [
+          "A",
+          "B",
+          "C"
+        ]
+      }
+    },
+    "BrandsWanted": {
+      "propertyOrder": 1,
+      "type": "array",
+      "title":"Ich/wir interessiere/n mich/uns für:",
+      "format": "checkbox",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": [
+          "A",
+          "B",
+          "C"
+        ]
+      }
+    }
+  },
+  "oneOf": [
+    {
+      "propertyOrder": 2,
+      "title": "Ich komme alleine",
+      "type": "object",
+      "properties": {
+        "Room": {
+          "type": "string",
+          "title": "Zimmer:",
+          "enum": ["Doppelzimmer", "Einzelzimmer"]
+        },
+        "Message": {
+          "type": "string",
+          "format": "textarea",
+          "title": "Ihre Nachricht an uns",
+          "options": {
+            "expand_height": true
+          }
+        }
+      }
+    },
+    {
+      "title": "Ich komme in Begleitung",
+      "type": "object",
+      "format": "table",
+      "properties": {
+        "AnredeBegleitung": {
+          "title":"Anrede Begleitung",
+          "type": "string",
+          "enum": [
+            "Herr",
+            "Frau"
+          ]
+        },
+        "SNBegleitung": {
+          "type": "string",
+          "title": "Name Begleitung"
+        },
+        "FNBegleitung": {
+          "type": "string",
+          "title": "Vorname Begleitung"
+        },
+        "FunctionBegleitung": {
+          "type": "string",
+          "title": "Funktion im Unternehmen"
+        },
+        "Room": {
+          "type": "string",
+          "title": "Zimmer:",
+          "enum": ["Doppelzimmer", "Einzelzimmer"]
+        },
+        "Message": {
+          "type": "string",
+          "format": "textarea",
+          "title": "Ihre Nachricht an uns"
+        }
+      }
+    }
+  ]
+}

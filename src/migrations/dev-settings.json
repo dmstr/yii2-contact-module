@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "properties": {
+    "fromMail": {
+      "type": "string",
+      "format": "email"
+    },
+    "toMail": {
+      "type": "string",
+      "format": "email"
+    }
+  }
+}
