@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "69b52e3758dc21a9594f055d5586f68c",
+    "content-hash": "4c68e77849abf3a04a24bf7d1169330e",
     "packages": [
         {
             "name": "beowulfenator/yii2-json-editor",
@@ -535,21 +535,22 @@
         },
         {
             "name": "dmstr/yii2-contact-module",
-            "version": "0.1.2",
+            "version": "0.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dmstr/yii2-contact-module.git",
-                "reference": "85df61726e55107c048db1460ebbeb5f9484b4db"
+                "reference": "fdad0de36a8094b842d4e2a28d742bb59d505ced"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dmstr/yii2-contact-module/zipball/85df61726e55107c048db1460ebbeb5f9484b4db",
-                "reference": "85df61726e55107c048db1460ebbeb5f9484b4db",
+                "url": "https://api.github.com/repos/dmstr/yii2-contact-module/zipball/fdad0de36a8094b842d4e2a28d742bb59d505ced",
+                "reference": "fdad0de36a8094b842d4e2a28d742bb59d505ced",
                 "shasum": ""
             },
             "require": {
                 "beowulfenator/yii2-json-editor": "^1.1.3",
                 "justinrainbow/json-schema": "^5.2.0",
+                "pheme/yii2-settings": "^0.4",
                 "yiisoft/yii2": "*"
             },
             "type": "yii2-extension",
@@ -573,7 +574,7 @@
                 "extension",
                 "yii2"
             ],
-            "time": "2017-04-09T06:27:53+00:00"
+            "time": "2017-04-09T18:54:54+00:00"
         },
         {
             "name": "ezyang/htmlpurifier",
