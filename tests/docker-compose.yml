@@ -1,0 +1,26 @@
+version: '3'
+services:
+  yii:
+    build: .
+    volumes:
+      - ../:/mnt/yii2-contact-module
+      # Re-use local composer cache via host-volume
+      - ~/.composer/cache:/root/.composer/cache
+      - ./composer.json:/app/composer.json
+      - ./composer.lock:/app/composer.lock
+    environment:
+      - APP_CONFIG_FILE=/mnt/yii2-contact-module/tests/config/test.php
+      - YII_ENV=test
+      - YII_DEBUG=1
+      - DATABASE_DSN=mysql:host=mysql;dbname=mysql
+      - DATABASE_USER=mysql
+      - DATABASE_PASSWORD=mysql
+    ports:
+      - 80
+  mysql:
+    image: percona:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_DATABASE=mysql
+      - MYSQL_USER=mysql
+      - MYSQL_PASSWORD=mysql
