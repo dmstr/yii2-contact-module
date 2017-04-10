@@ -26,7 +26,7 @@ abstract class ContactLog extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'core_dmstr_contact_log';
+        return '{{%dmstr_contact_log}}';
     }
 
 

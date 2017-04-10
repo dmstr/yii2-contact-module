@@ -13,6 +13,7 @@ namespace dmstr\modules\contact\controllers\crud\base;
 
 use dmstr\modules\contact\models\ContactLog;
 use dmstr\modules\contact\models\search\ContactLog as ContactLogSearch;
+use dmstr\web\traits\AccessBehaviorTrait;
 use yii\web\Controller;
 use yii\web\HttpException;
 use yii\helpers\Url;
@@ -24,7 +25,7 @@ use dmstr\bootstrap\Tabs;
  */
 class ContactLogController extends Controller
 {
-
+    use AccessBehaviorTrait;
 
 	/**
 	 *

@@ -11,7 +11,7 @@ class Module extends \yii\base\Module
      * @inheritdoc
      */
     public $controllerNamespace = 'dmstr\modules\contact\controllers';
-
+    public $defaultRoute = 'crud/contact-log';
     public $frontendLayout = '//main';
 
     /**

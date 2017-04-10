@@ -4,7 +4,7 @@ use dmstr\modules\contact\controllers;
 
 /**
  *
- * @var $params dmstr\modules\contact\controllers\DefaultController;
+ * @var $params dmstr\modules\contact\controllers\FormController;
  *
  */
 ?>
