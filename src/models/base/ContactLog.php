@@ -6,6 +6,7 @@ namespace dmstr\modules\contact\models\base;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\db\Expression;
 
 /**
  * This is the base-model class for table "core_dmstr_contact_log".
@@ -39,6 +40,7 @@ abstract class ContactLog extends \yii\db\ActiveRecord
             [
                 'class' => TimestampBehavior::className(),
                 'updatedAtAttribute' => false,
+                'value' => new Expression('NOW()'),
             ],
         ];
     }
