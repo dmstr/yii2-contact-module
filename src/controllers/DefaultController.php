@@ -10,6 +10,7 @@ use yii\helpers\Url;
 use yii\web\Controller;
 use JsonSchema\Validator;
 use yii\helpers\Json;
+use yii\validators\EmailValidator;
 
 /**
  * Default controller for the `contact` module
@@ -122,6 +123,17 @@ class DefaultController extends Controller
         $message->subject = empty($this->schemaSettings['subject']) ? "Contact Form - ".getenv('APP_TITLE') : $this->schemaSettings['subject'];
         $message->textBody = $text;
 
+        $validator = new EmailValidator();
+        # set optional ReturnPath Header
+        if ((! empty($this->schemaSettings['returnPath'])) && ($validator->validate($this->schemaSettings['returnPath']))) {
+            $message->setReturnPath($this->schemaSettings['returnPath']);
+        }
+
+        # set optional Reply-To Header if reply_to is set in schema and is valid email address
+        if ((! empty($data['reply_to'])) && ($validator->validate($data['reply_to']))){
+            $message->replyTo = $data['reply_to'];
+        }
+
         /** @var \yii\mail\BaseMailer $mailer */
         $mailer = Yii::$app->mailer;
         return $mailer->send($message);
@@ -129,22 +141,22 @@ class DefaultController extends Controller
 
     protected function sendConfirmMessage($model)
     {
-        // if no confirmMail templ is set as setting, nothing to send, so return
+        // if no confirmMail template is set as setting, nothing to send, so return
         if (empty($this->schemaSettings['confirmMail'])) {
             return;
         }
 
         $data = yii\helpers\Json::decode($model->json);
-        #yii\helpers\VarDumper::dump($data['Participant']['Email'], 10,1); exit;
 
-        // TODO: path to mail shouldn't be hardcoded....
-        if (empty($data['Participant']['Email'])) {
+        # only send mail if reply_to is set in schema and is valid email address
+        $validator = new EmailValidator();
+        if ((empty($data['reply_to'])) || (! $validator->validate($data['reply_to']))){
             return;
         }
 
         $message = Yii::createObject('yii\swiftmailer\Message');
         $message->from = $this->schemaSettings['fromEmail'];
-        $message->to = $data['Participant']['Email'];
+        $message->to = $data['reply_to'];
         $message->textBody = $this->schemaSettings['confirmMail'];
         $message->subject = empty($this->schemaSettings['subject']) ? "Contact Form - ".getenv('APP_TITLE') : $this->schemaSettings['subject'];
 
@@ -195,11 +207,11 @@ class DefaultController extends Controller
         $this->schemaSettings['toEmail'] = Yii::$app->settings->get($schema.'.toEmail', 'contact');
         $this->schemaSettings['subject'] = Yii::$app->settings->get($schema.'.subject', 'contact');
         $this->schemaSettings['confirmMail'] = Yii::$app->settings->get($schema.'.confirmMail', 'contact');
+        $this->schemaSettings['returnPath'] = Yii::$app->settings->get($schema.'.returnPath', 'contact');
 
         if (!is_object($this->schemaSettings['schema'])) {
             throw new yii\base\Exception('Schema setting is not an object.');
         }
-        #var_dump($this->schemaSettings['schema']);
     }
 
     private function validateSettings($schema)
