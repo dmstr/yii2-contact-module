@@ -10,8 +10,8 @@ settings:
 |Name                |Type   |Required   |Default        |
 |--------------------|-------|-----------|---------------|
 |formname.schema     |json   |yes        |-              |
-|formname.toMail     |string |yes        |-              |
-|formname.from.Email |string |yes        |-              |
+|formname.toEmail    |string |yes        |-              |
+|formname.fromEmail  |string |yes        |-              |
 |formname.subject    |string |no         |Contact Form   |
 |formname.confirmMail|string |no         |-              |
 |formname.returnPath |string |no         |-              |
