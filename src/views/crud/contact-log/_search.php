@@ -26,11 +26,13 @@ use yii\widgets\ActiveForm;
 
     		<?php echo $form->field($model, 'id') ?>
 
-		<?php echo $form->field($model, 'schema') ?>
+		<?php echo $form->field($model, 'contact_template_id') ?>
 
 		<?php echo $form->field($model, 'json') ?>
 
 		<?php echo $form->field($model, 'created_at') ?>
+
+		<?php echo $form->field($model, 'updated_at') ?>
 
     <div class="form-group">
         <?php echo Html::submitButton(Yii::t('cruds', 'Search'), ['class' => 'btn btn-primary']) ?>

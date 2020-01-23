@@ -4,6 +4,7 @@ namespace dmstr\modules\contact\controllers;
 
 use dmstr\modules\contact\models\ContactForm;
 use dmstr\modules\contact\models\ContactLog;
+use dmstr\modules\contact\models\ContactTemplate;
 use dmstr\modules\contact\Module;
 use JsonSchema\Validator;
 use yii;
@@ -46,28 +47,32 @@ class DefaultController extends Controller
      */
     public function actionIndex($schema)
     {
-        $formModel = new ContactForm();
-        $formModel->schema = $schema;
 
-        if ($this->setSettings($schema) === false) {
+        $contactSchema = ContactTemplate::findOne(['name' => $schema]);
+
+        if ($contactSchema === null) {
             throw new NotFoundHttpException('Page not found.');
         }
 
-        $this->validateSettings($schema);
+        $contactForm = new ContactForm([
+            'contact_template_id' => $contactSchema->id
+        ]);
 
-        if ($formModel->load(Yii::$app->request->post()) && $formModel->validate()) {
 
-            $dbModel = new ContactLog();
-            $dbModel->schema = $schema;
-            $dbModel->json = $formModel->json;
+        if ($contactForm->load(Yii::$app->request->post()) && $contactForm->validate()) {
 
-            if (!$dbModel->save()) {
+            $contactLog = new ContactLog([
+                'contact_template_id' => $contactSchema->id,
+                'json' => $contactForm->json,
+            ]);
+
+            if (!$contactLog->save()) {
                 throw new HttpException(500, 'Your message could not be sent.');
             }
-            Yii::$app->session->set(self::CONTACT_FORM_ID_KEY, $dbModel->id);
+            Yii::$app->session->set(self::CONTACT_FORM_ID_KEY, $contactLog->id);
 
-            if ($this->sendMessage($dbModel)) {
-                $this->sendConfirmMessage($dbModel);
+            if ($contactLog->sendMessage()) {
+                $contactLog->sendConfirmMessage();
                 Yii::$app->session->addFlash('success', Yii::t('contact', 'Your message was successfully sent.'));
             } else {
                 Yii::$app->session->addFlash('error', Yii::t('contact', 'Your message could not be sent.'));
@@ -75,14 +80,12 @@ class DefaultController extends Controller
             $this->redirect(['/contact/default/done', 'schema' => $schema]);
         }
 
-        $schemaData = Json::decode($this->schemaSettings['schema']->scalar);
-
         return $this->render(
             'index',
             [
-                'model' => $formModel,
+                'model' => $contactForm,
                 'schema' => $schema,
-                'schemaData' => $schemaData
+                'schemaData' => Json::decode($contactForm->schema)
             ]
         );
     }
@@ -105,136 +108,6 @@ class DefaultController extends Controller
             ]
         );
 
-    }
-
-    /**
-     * Send message via mailer component
-     *
-     * @param $model
-     *
-     * @return bool
-     * @throws HttpException
-     * @throws yii\base\InvalidConfigException
-     */
-    protected function sendMessage($model)
-    {
-        $data = Json::decode($model->json);
-
-        if (empty($data)) {
-            throw new HttpException(422, Yii::t('contact', 'No processable data was sent.'));
-        }
-
-        $text = $this->dataValue2txt($data);
-        $message = Yii::createObject(Message::class);
-
-        $message->to = $this->schemaSettings['toEmail'];
-        $message->from = $this->schemaSettings['fromEmail'];
-        $message->subject = empty($this->schemaSettings['subject']) ? Yii::t('contact', 'Contact Form - {appName}',
-            ['appName' => getenv('APP_TITLE')]) : $this->schemaSettings['subject'];
-        $message->textBody = $text;
-
-        $validator = new EmailValidator();
-        # set optional ReturnPath Header
-        if ((!empty($this->schemaSettings['returnPath'])) && ($validator->validate($this->schemaSettings['returnPath']))) {
-            $message->setReturnPath($this->schemaSettings['returnPath']);
-        }
-
-        # set optional Reply-To Header if reply_to is set in schema and is valid email address
-        if ((!empty($data['reply_to'])) && ($validator->validate($data['reply_to']))) {
-            $message->replyTo = $data['reply_to'];
-        }
-
-        return Yii::$app->mailer->send($message);
-    }
-
-    protected function sendConfirmMessage($model)
-    {
-        // if no confirmMail template is set as setting, nothing to send, so return
-        if (empty($this->schemaSettings['confirmMail'])) {
-            return false;
-        }
-
-        $data = Json::decode($model->json);
-
-        # only send mail if reply_to is set in schema and is valid email address
-        $validator = new EmailValidator();
-        if ((empty($data['reply_to'])) || (!$validator->validate($data['reply_to']))) {
-            return false;
-        }
-
-        $message = Yii::createObject(Message::class);
-        $message->from = $this->schemaSettings['fromEmail'];
-        $message->to = $data['reply_to'];
-        $message->textBody = $this->schemaSettings['confirmMail'];
-        $message->subject = empty($this->schemaSettings['subject']) ? Yii::t('contact', 'Contact Form - {appName}',
-            ['appName' => getenv('APP_TITLE')]) : $this->schemaSettings['subject'];
-
-        return Yii::$app->mailer->send($message);
-
-    }
-
-    /**
-     * recursive helper to print structured array as indented txt
-     *
-     * @param array $data
-     * @param int $level
-     *
-     * @return string
-     */
-    private function dataValue2txt($data, $level = 0)
-    {
-
-        $text = '';
-        ++$level;
-        $prefix = str_repeat(' ', $level * 2);
-
-        if (!is_array($data)) {
-            return $text;
-        }
-
-        foreach ($data as $key => $value) {
-
-            if (is_array($value)) {
-                $valueText = "\n" . $this->dataValue2txt($value, $level);
-            } else {
-                $valueText = trim($value);
-            }
-            $text .= $prefix . trim($key) . ': ' . $valueText . "\n";
-
-        }
-
-        return $text;
-
-    }
-
-    protected function setSettings($schema)
-    {
-        $this->schemaSettings['schema'] = Yii::$app->settings->get($schema . '.schema', 'contact');
-        $this->schemaSettings['fromEmail'] = Yii::$app->settings->get($schema . '.fromEmail', 'contact');
-        $this->schemaSettings['toEmail'] = Yii::$app->settings->get($schema . '.toEmail', 'contact');
-        $this->schemaSettings['subject'] = Yii::$app->settings->get($schema . '.subject', 'contact');
-        $this->schemaSettings['confirmMail'] = Yii::$app->settings->get($schema . '.confirmMail', 'contact');
-        $this->schemaSettings['returnPath'] = Yii::$app->settings->get($schema . '.returnPath', 'contact');
-
-        return is_object($this->schemaSettings['schema']);
-    }
-
-    private function validateSettings($schema)
-    {
-
-        return true;
-
-        // TODO validate against custom defined schema
-        $validator = new Validator();
-        $obj = Json::decode(\Yii::$app->settings->get($schema . '.settings', 'contact')->scalar, true);
-        @
-        $validator->check($this->schemaSettings, $obj);
-
-        if ($validator->getErrors()) {
-            foreach ($validator->getErrors() as $error) {
-                \Yii::error(__CLASS__ . ':' . __METHOD__, "{$error['property']}: {$error['message']}");
-            }
-        }
     }
 
 }

@@ -31,8 +31,8 @@ class m200123_115704_alter_contact_log_table extends Migration
             $this->update('{{%dmstr_contact_log}}', ['schema' => $schemaId]);
         }
 
-        $this->renameColumn('{{%dmstr_contact_log}}', 'schema', 'contact_schema_id');
-        $this->alterColumn('{{%dmstr_contact_log}}', 'contact_schema_id', 'INT(11) NOT NULL');
+        $this->renameColumn('{{%dmstr_contact_log}}', 'schema', 'contact_template_id');
+        $this->alterColumn('{{%dmstr_contact_log}}', 'contact_template_id', 'INT(11) NOT NULL');
 
     }
 

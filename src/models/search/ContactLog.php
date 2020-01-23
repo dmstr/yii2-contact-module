@@ -26,8 +26,8 @@ class ContactLog extends ContactLogModel
 	 */
 	public function rules() {
 		return [
-			[['id'], 'integer'],
-			[['schema', 'json', 'created_at', 'updated_at'], 'safe'],
+			[['id', 'contact_template_id'], 'integer'],
+			[['json', 'created_at', 'updated_at'], 'safe'],
 		];
 	}
 
@@ -67,12 +67,12 @@ class ContactLog extends ContactLogModel
 
 		$query->andFilterWhere([
 				'id' => $this->id,
+				'contact_template_id' => $this->contact_template_id,
 				'created_at' => $this->created_at,
 				'updated_at' => $this->updated_at,
 			]);
 
-		$query->andFilterWhere(['like', 'schema', $this->schema])
-		->andFilterWhere(['like', 'json', $this->json]);
+		$query->andFilterWhere(['like', 'json', $this->json]);
 
 		return $dataProvider;
 	}

@@ -12,11 +12,24 @@ use yii\helpers\Json;
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
+ *
+ * @property bool $schema
  */
 class ContactForm extends Model
 {
-    public $schema;
+    public $contact_template_id;
     public $json;
+
+    public function getSchema()
+    {
+        $model = ContactTemplate::findOne($this->contact_template_id);
+
+        if ($model === null) {
+            return false;
+        }
+
+        return $model->form_schema;
+    }
 
     public function rules()
     {
@@ -26,9 +39,7 @@ class ContactForm extends Model
             function ($attribute) {
 
                 $validator = new Validator();
-
-                $schema = $this->schema;
-                $obj = Json::decode(\Yii::$app->settings->get($schema . '.schema', 'contact')->scalar, false);
+                $obj = Json::decode($this->schema, false);
                 $data = Json::decode($this->{$attribute}, false);
                 $validator->check($data, $obj);
 

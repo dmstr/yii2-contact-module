@@ -248,6 +248,5 @@ yii giiant-batch \
         --crudControllerNamespace=dmstr\\modules\\contact\\controllers\\crud \
         --crudSearchModelNamespace=dmstr\\modules\\contact\\models\\search \
         --useTimestampBehavior=0 \
-        --interactive=0
-        
+        --interactive=0 
 ```

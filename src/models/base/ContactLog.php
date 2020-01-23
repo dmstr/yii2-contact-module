@@ -10,9 +10,10 @@ use Yii;
  * This is the base-model class for table "app_dmstr_contact_log".
  *
  * @property integer $id
- * @property string $schema
+ * @property integer $contact_template_id
  * @property string $json
  * @property string $created_at
+ * @property string $updated_at
  * @property string $aliasModel
  */
 abstract class ContactLog extends \yii\db\ActiveRecord
@@ -34,9 +35,10 @@ abstract class ContactLog extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['contact_template_id', 'json'], 'required'],
+            [['contact_template_id'], 'integer'],
             [['json'], 'string'],
-            [['created_at'], 'safe'],
-            [['schema'], 'string', 'max' => 64]
+            [['created_at', 'updated_at'], 'safe']
         ];
     }
 
@@ -47,9 +49,10 @@ abstract class ContactLog extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('models', 'ID'),
-            'schema' => Yii::t('models', 'Schema'),
+            'contact_template_id' => Yii::t('models', 'Contact Template ID'),
             'json' => Yii::t('models', 'Json'),
             'created_at' => Yii::t('models', 'Created At'),
+            'updated_at' => Yii::t('models', 'Updated At'),
         ];
     }
 
