@@ -13,5 +13,9 @@ namespace dmstr\modules\contact\controllers\crud;
  */
 class ContactLogController extends \dmstr\modules\contact\controllers\crud\base\ContactLogController
 {
-
+    public function init()
+    {
+        parent::init();
+        $this->layout = $this->module->backendLayout;
+    }
 }

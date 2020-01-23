@@ -16,16 +16,16 @@ use dmstr\bootstrap\Tabs;
 /**
  *
  * @var yii\web\View $this
- * @var dmstr\modules\contact\models\ContactLog $model
+ * @var dmstr\modules\contact\models\ContactTemplate $model
  */
 $copyParams = $model->attributes;
 
-$this->title = Yii::t('models', 'Contact Log');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('models', 'Contact Logs'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => (string)$model->id, 'url' => ['view', 'id' => $model->id]];
+$this->title = Yii::t('models', 'Contact Template');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('models', 'Contact Templates'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => (string)$model->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
 ?>
-<div class="giiant-crud contact-log-view">
+<div class="giiant-crud contact-template-view">
 
     <!-- flash message -->
     <?php if (\Yii::$app->session->getFlash('deleteError') !== null) : ?>
@@ -37,9 +37,9 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
     <?php endif; ?>
 
     <h1>
-        <?php echo Yii::t('models', 'Contact Log') ?>
+        <?php echo Yii::t('models', 'Contact Template') ?>
         <small>
-            <?php echo Html::encode($model->id) ?>
+            <?php echo Html::encode($model->name) ?>
         </small>
     </h1>
 
@@ -55,7 +55,7 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
 
             <?php echo Html::a(
 	'<span class="glyphicon glyphicon-copy"></span> ' . Yii::t('cruds', 'Copy'),
-	['create', 'id' => $model->id, 'ContactLog'=>$copyParams],
+	['create', 'id' => $model->id, 'ContactTemplate'=>$copyParams],
 	['class' => 'btn btn-success']) ?>
 
             <?php echo Html::a(
@@ -73,15 +73,22 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
 
     <hr/>
 
-    <?php $this->beginBlock('dmstr\modules\contact\models\ContactLog'); ?>
+    <?php $this->beginBlock('dmstr\modules\contact\models\ContactTemplate'); ?>
 
 
     <?php echo DetailView::widget([
 		'model' => $model,
 		'attributes' => [
-			'json:ntext',
+			'name',
+			'from_email:email',
+			'to_email:email',
+			'form_schema:ntext',
+			'confirm_email_text:ntext',
+			'send_confirm_email:email',
 			'created_at',
-			'schema',
+			'updated_at',
+			'reply_to_email:email',
+			'email_subject:email',
 		],
 	]); ?>
 
@@ -105,7 +112,7 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
 		'items' => [
 			[
 				'label'   => '<b class=""># '.Html::encode($model->id).'</b>',
-				'content' => $this->blocks['dmstr\modules\contact\models\ContactLog'],
+				'content' => $this->blocks['dmstr\modules\contact\models\ContactTemplate'],
 				'active'  => true,
 			],
 		]

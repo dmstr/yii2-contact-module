@@ -3,22 +3,23 @@
 namespace dmstr\modules\contact\models;
 
 use Yii;
-use \dmstr\modules\contact\models\base\ContactLog as BaseContactLog;
+use \dmstr\modules\contact\models\base\ContactTemplate as BaseContactTemplate;
 use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
 use yii\helpers\ArrayHelper;
 
 /**
- * This is the model class for table "core_dmstr_contact_log".
+ * This is the model class for table "app_dmstr_contact_template".
  */
-class ContactLog extends BaseContactLog
+class ContactTemplate extends BaseContactTemplate
 {
+
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return '{{%dmstr_contact_log}}';
+        return '{{%dmstr_contact_template}}';
     }
 
     public function behaviors()

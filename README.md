@@ -240,11 +240,14 @@ Done:
 
 ```bash
 yii giiant-batch \
-        --tables=core_dmstr_contact_log \
-        --tablePrefix=core_dmstr \
-        --modelNamespace=hrzg\\contact\\models \
-        --modelQueryNamespace=hrzg\\contact\\models\\query \
-        --crudViewPath=@hrzg/contact/views/crud \
-        --crudControllerNamespace=hrzg\\contact\\controllers\\crud \
-        --crudSearchModelNamespace=hrzg\\contact\\models\\search
+        --tables=app_dmstr_contact_template,app_dmstr_contact_log \
+        --tablePrefix=app_dmstr_ \
+        --modelNamespace=dmstr\\modules\\contact\\models \
+        --modelQueryNamespace=dmstr\\modules\\contact\\models\\query \
+        --crudViewPath=@dmstr/modules/contact/views/crud \
+        --crudControllerNamespace=dmstr\\modules\\contact\\controllers\\crud \
+        --crudSearchModelNamespace=dmstr\\modules\\contact\\models\\search \
+        --useTimestampBehavior=0 \
+        --interactive=0
+        
 ```

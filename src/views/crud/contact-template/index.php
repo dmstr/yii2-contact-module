@@ -14,9 +14,9 @@ use yii\grid\GridView;
  *
  * @var yii\web\View $this
  * @var yii\data\ActiveDataProvider $dataProvider
- * @var dmstr\modules\contact\models\search\ContactLog $searchModel
+ * @var dmstr\modules\contact\models\search\ContactTemplate $searchModel
  */
-$this->title = Yii::t('models', 'Contact Logs');
+$this->title = Yii::t('models', 'Contact Templates');
 $this->params['breadcrumbs'][] = $this->title;
 
 if (isset($actionColumnTemplates)) {
@@ -28,7 +28,7 @@ if (isset($actionColumnTemplates)) {
 }
 $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTemplateString.'</div>';
 ?>
-<div class="giiant-crud contact-log-index">
+<div class="giiant-crud contact-template-index">
 
     <?php
 //             echo $this->render('_search', ['model' =>$searchModel]);
@@ -38,7 +38,7 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
     <?php \yii\widgets\Pjax::begin(['id'=>'pjax-main', 'enableReplaceState'=> false, 'linkSelector'=>'#pjax-main ul.pagination a, th a', 'clientOptions' => ['pjax:success'=>'function(){alert("yo")}']]) ?>
 
     <h1>
-        <?php echo Yii::t('models', 'Contact Logs') ?>
+        <?php echo Yii::t('models', 'Contact Templates') ?>
         <small>
             List
         </small>
@@ -112,9 +112,16 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
 				},
 				'contentOptions' => ['nowrap'=>'nowrap']
 			],
-			'json:ntext',
+			'name',
+			'from_email:email',
+			'to_email:email',
+			'form_schema:ntext',
+			'confirm_email_text:ntext',
+			'send_confirm_email:email',
 			'created_at',
-			'schema',
+			/*'updated_at',*/
+			/*'reply_to_email:email',*/
+			/*'email_subject:email',*/
 		],
 	]); ?>
     </div>

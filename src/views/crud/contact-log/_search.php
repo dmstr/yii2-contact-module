@@ -1,6 +1,6 @@
 <?php
 /**
- * /app/src/../runtime/giiant/eeda5c365686c9888dbc13dbc58f89a1
+ * /app/runtime/giiant/eeda5c365686c9888dbc13dbc58f89a1
  *
  * @package default
  */

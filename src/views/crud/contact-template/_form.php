@@ -14,15 +14,15 @@ use yii\helpers\StringHelper;
 /**
  *
  * @var yii\web\View $this
- * @var dmstr\modules\contact\models\ContactLog $model
+ * @var dmstr\modules\contact\models\ContactTemplate $model
  * @var yii\widgets\ActiveForm $form
  */
 ?>
 
-<div class="contact-log-form">
+<div class="contact-template-form">
 
     <?php $form = ActiveForm::begin([
-		'id' => 'ContactLog',
+		'id' => 'ContactTemplate',
 		'layout' => 'horizontal',
 		'enableClientValidation' => true,
 		'errorSummaryCssClass' => 'error-summary alert alert-danger',
@@ -46,14 +46,35 @@ use yii\helpers\StringHelper;
         <p>
 
 
-<!-- attribute json -->
-			<?php echo $form->field($model, 'json')->textarea(['rows' => 6]) ?>
+<!-- attribute name -->
+			<?php echo $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+
+<!-- attribute from_email -->
+			<?php echo $form->field($model, 'from_email')->textInput(['maxlength' => true]) ?>
+
+<!-- attribute to_email -->
+			<?php echo $form->field($model, 'to_email')->textInput(['maxlength' => true]) ?>
+
+<!-- attribute form_schema -->
+			<?php echo $form->field($model, 'form_schema')->textarea(['rows' => 6]) ?>
+
+<!-- attribute confirm_email_text -->
+			<?php echo $form->field($model, 'confirm_email_text')->textarea(['rows' => 6]) ?>
+
+<!-- attribute send_confirm_email -->
+			<?php echo $form->field($model, 'send_confirm_email')->textInput() ?>
 
 <!-- attribute created_at -->
 			<?php echo $form->field($model, 'created_at')->textInput() ?>
 
-<!-- attribute schema -->
-			<?php echo $form->field($model, 'schema')->textInput(['maxlength' => true]) ?>
+<!-- attribute updated_at -->
+			<?php echo $form->field($model, 'updated_at')->textInput() ?>
+
+<!-- attribute reply_to_email -->
+			<?php echo $form->field($model, 'reply_to_email')->textInput(['maxlength' => true]) ?>
+
+<!-- attribute email_subject -->
+			<?php echo $form->field($model, 'email_subject')->textInput(['maxlength' => true]) ?>
         </p>
         <?php $this->endBlock(); ?>
 
@@ -63,7 +84,7 @@ Tabs::widget(
 		'encodeLabels' => false,
 		'items' => [
 			[
-				'label'   => Yii::t('models', 'ContactLog'),
+				'label'   => Yii::t('models', 'ContactTemplate'),
 				'content' => $this->blocks['main'],
 				'active'  => true,
 			],

@@ -11,8 +11,8 @@
 
 namespace dmstr\modules\contact\controllers\crud\base;
 
-use dmstr\modules\contact\models\ContactLog;
-use dmstr\modules\contact\models\search\ContactLog as ContactLogSearch;
+use dmstr\modules\contact\models\ContactTemplate;
+use dmstr\modules\contact\models\search\ContactTemplate as ContactTemplateSearch;
 use yii\web\Controller;
 use yii\web\HttpException;
 use yii\helpers\Url;
@@ -20,9 +20,9 @@ use yii\filters\AccessControl;
 use dmstr\bootstrap\Tabs;
 
 /**
- * ContactLogController implements the CRUD actions for ContactLog model.
+ * ContactTemplateController implements the CRUD actions for ContactTemplate model.
  */
-class ContactLogController extends Controller
+class ContactTemplateController extends Controller
 {
 
 
@@ -35,12 +35,12 @@ class ContactLogController extends Controller
 
 
 	/**
-	 * Lists all ContactLog models.
+	 * Lists all ContactTemplate models.
 	 *
 	 * @return mixed
 	 */
 	public function actionIndex() {
-		$searchModel  = new ContactLogSearch;
+		$searchModel  = new ContactTemplateSearch;
 		$dataProvider = $searchModel->search($_GET);
 
 		Tabs::clearLocalStorage();
@@ -56,7 +56,7 @@ class ContactLogController extends Controller
 
 
 	/**
-	 * Displays a single ContactLog model.
+	 * Displays a single ContactTemplate model.
 	 *
 	 * @param integer $id
 	 * @return mixed
@@ -73,13 +73,13 @@ class ContactLogController extends Controller
 
 
 	/**
-	 * Creates a new ContactLog model.
+	 * Creates a new ContactTemplate model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 *
 	 * @return mixed
 	 */
 	public function actionCreate() {
-		$model = new ContactLog;
+		$model = new ContactTemplate;
 
 		try {
 			if ($model->load($_POST) && $model->save()) {
@@ -96,7 +96,7 @@ class ContactLogController extends Controller
 
 
 	/**
-	 * Updates an existing ContactLog model.
+	 * Updates an existing ContactTemplate model.
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 *
 	 * @param integer $id
@@ -116,7 +116,7 @@ class ContactLogController extends Controller
 
 
 	/**
-	 * Deletes an existing ContactLog model.
+	 * Deletes an existing ContactTemplate model.
 	 * If deletion is successful, the browser will be redirected to the 'index' page.
 	 *
 	 * @param integer $id
@@ -149,15 +149,15 @@ class ContactLogController extends Controller
 
 
 	/**
-	 * Finds the ContactLog model based on its primary key value.
+	 * Finds the ContactTemplate model based on its primary key value.
 	 * If the model is not found, a 404 HTTP exception will be thrown.
 	 *
 	 * @throws HttpException if the model cannot be found
 	 * @param integer $id
-	 * @return ContactLog the loaded model
+	 * @return ContactTemplate the loaded model
 	 */
 	protected function findModel($id) {
-		if (($model = ContactLog::findOne($id)) !== null) {
+		if (($model = ContactTemplate::findOne($id)) !== null) {
 			return $model;
 		} else {
 			throw new HttpException(404, 'The requested page does not exist.');

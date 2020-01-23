@@ -11,18 +11,18 @@ use yii\helpers\Html;
 /**
  *
  * @var yii\web\View $this
- * @var dmstr\modules\contact\models\ContactLog $model
+ * @var dmstr\modules\contact\models\ContactTemplate $model
  */
-$this->title = Yii::t('models', 'Contact Log');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('models', 'Contact Logs'), 'url' => ['index']];
+$this->title = Yii::t('models', 'Contact Template');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('models', 'Contact Templates'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="giiant-crud contact-log-create">
+<div class="giiant-crud contact-template-create">
 
     <h1>
-        <?php echo Yii::t('models', 'Contact Log') ?>
+        <?php echo Yii::t('models', 'Contact Template') ?>
         <small>
-                        <?php echo Html::encode($model->id) ?>
+                        <?php echo Html::encode($model->name) ?>
         </small>
     </h1>
 

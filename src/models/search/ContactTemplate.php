@@ -11,12 +11,12 @@ namespace dmstr\modules\contact\models\search;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use dmstr\modules\contact\models\ContactLog as ContactLogModel;
+use dmstr\modules\contact\models\ContactTemplate as ContactTemplateModel;
 
 /**
- * ContactLog represents the model behind the search form about `dmstr\modules\contact\models\ContactLog`.
+ * ContactTemplate represents the model behind the search form about `dmstr\modules\contact\models\ContactTemplate`.
  */
-class ContactLog extends ContactLogModel
+class ContactTemplate extends ContactTemplateModel
 {
 
 	/**
@@ -26,8 +26,8 @@ class ContactLog extends ContactLogModel
 	 */
 	public function rules() {
 		return [
-			[['id'], 'integer'],
-			[['schema', 'json', 'created_at', 'updated_at'], 'safe'],
+			[['id', 'send_confirm_email'], 'integer'],
+			[['name', 'from_email', 'reply_to_email', 'to_email', 'email_subject', 'form_schema', 'confirm_email_text', 'created_at', 'updated_at'], 'safe'],
 		];
 	}
 
@@ -51,7 +51,7 @@ class ContactLog extends ContactLogModel
 	 * @return ActiveDataProvider
 	 */
 	public function search($params) {
-		$query = ContactLogModel::find();
+		$query = ContactTemplateModel::find();
 
 		$dataProvider = new ActiveDataProvider([
 				'query' => $query,
@@ -67,12 +67,18 @@ class ContactLog extends ContactLogModel
 
 		$query->andFilterWhere([
 				'id' => $this->id,
+				'send_confirm_email' => $this->send_confirm_email,
 				'created_at' => $this->created_at,
 				'updated_at' => $this->updated_at,
 			]);
 
-		$query->andFilterWhere(['like', 'schema', $this->schema])
-		->andFilterWhere(['like', 'json', $this->json]);
+		$query->andFilterWhere(['like', 'name', $this->name])
+		->andFilterWhere(['like', 'from_email', $this->from_email])
+		->andFilterWhere(['like', 'reply_to_email', $this->reply_to_email])
+		->andFilterWhere(['like', 'to_email', $this->to_email])
+		->andFilterWhere(['like', 'email_subject', $this->email_subject])
+		->andFilterWhere(['like', 'form_schema', $this->form_schema])
+		->andFilterWhere(['like', 'confirm_email_text', $this->confirm_email_text]);
 
 		return $dataProvider;
 	}

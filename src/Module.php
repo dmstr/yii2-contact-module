@@ -12,4 +12,5 @@ class Module extends \yii\base\Module
      */
     public $defaultRoute = 'crud/contact-log';
     public $frontendLayout = '//main';
+    public $backendLayout = '@backend/views/layouts/box';
 }

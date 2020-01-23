@@ -5,11 +5,9 @@
 namespace dmstr\modules\contact\models\base;
 
 use Yii;
-use yii\behaviors\TimestampBehavior;
-use yii\db\Expression;
 
 /**
- * This is the base-model class for table "core_dmstr_contact_log".
+ * This is the base-model class for table "app_dmstr_contact_log".
  *
  * @property integer $id
  * @property string $schema
@@ -27,22 +25,7 @@ abstract class ContactLog extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%dmstr_contact_log}}';
-    }
-
-
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            [
-                'class' => TimestampBehavior::className(),
-                'updatedAtAttribute' => false,
-                'value' => new Expression('NOW()'),
-            ],
-        ];
+        return 'app_dmstr_contact_log';
     }
 
     /**
@@ -52,6 +35,7 @@ abstract class ContactLog extends \yii\db\ActiveRecord
     {
         return [
             [['json'], 'string'],
+            [['created_at'], 'safe'],
             [['schema'], 'string', 'max' => 64]
         ];
     }
