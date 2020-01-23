@@ -32,65 +32,75 @@ For more information about schema see examples on: https://github.com/jdorn/json
 
 ### Twig layout (
 
-```
-{{ use('beowulfenator/JsonEditor') }}
+Form:
+```twig
+{{ use('dmstr/jsoneditor/JsonEditorWidget') }}
+{{ use ('hrzg/widget/widgets') }}
+{{ use('yii/widgets/ActiveForm') }}
 
-<div class="container">
-    
-    <h1>Contact</h1>
-    
-    {% if success %}
-    
-        <div class="alert alert-success">
-            Your message has been sent. Thank you!
-        </div>
-    
-    {% else %}
-    
-        {{ use('yii/widgets/ActiveForm') }}    
+{{ cell_widget({id: 'top'}) }}
+
+<div class="row">
+    <div class="col-md-12">
         {% set form = active_form_begin({
             'id': 'contact-form',
             'action' : '',
             'options': {
             }
         }) %}
-    
-        {{ this.registerJs('JSONEditor.plugins.selectize.enable = true;') }}
-        {{ json_editor_widget_widget(
-            {
-                'model': model,
-                'attribute': 'json',
-                'options': {
-                    'id': 'contact-json'
-                },
-                'clientOptions': {
-                    'theme': 'bootstrap3',
-                    'disable_collapse': true,
-                    'disable_edit_json': true,
-                    'disable_properties': true,
-                    'no_additional_properties': true,
-                    'show_errors': 'always'
-                },
-                'schema': schema,
-            }
-        ) }}   
-    
-        {{ html.submitButton('Send', {
-            'class': 'btn btn-primary',
-        }) | raw }}
-               
-        {{ form.errorSummary(model) | raw }}
-        
-    {{ active_form_end() }}
-    
-    {% endif %}
 
+        {% set script %}
+            JSONEditor.defaults.language = "de";
+            JSONEditor.defaults.languages.de = {
+            error_minLength: "Muss mindestens \{\{\{0\}\} Zeichen enthalten.",
+            error_notset: "Muss gesetzt sein",
+            error_notempty: "Pflichtfeld"
+            };
+        {% endset %}
+        {{ this.registerJs(script) }}
+        {{ form.errorSummary(model) | raw }}
+        {{ this.registerJs('JSONEditor.plugins.selectize.enable = true;') }}
+
+
+        {{ json_editor_widget_widget({
+            'model': model,
+            'attribute': 'json',
+            'options': {
+                'id': 'contact-json'
+            },
+            'clientOptions': {
+                'theme': 'bootstrap3',
+                'disable_collapse': true,
+                'disable_edit_json': true,
+                'disable_properties': true,
+                'no_additional_properties': true,
+                'show_errors': 'always'
+            },
+            'schema': schema,
+        }) }}
+
+        <button type="submit" class="btn btn-primary">{{ t('twig-widget', 'Send') }}</button>
+
+        {{ active_form_end() }}
+    </div>
 </div>
+
+{{ cell_widget({id: 'bottom'}) }}
+```
+
+Done:
+```twig
+{{ use ('hrzg/widget/widgets') }}
+{{ cell_widget({id: 'top'}) }}
+
+<div class="alert alert-success">{{ t('twig-widget', 'Thank you for your message') }}</div>
+
+{{ cell_widget({id: 'bottom'}) }}
 ```
 
 ### Settings schema
 
-```
+```json
 {
   "title": " ",
   "type": "object",
@@ -228,7 +238,8 @@ For more information about schema see examples on: https://github.com/jdorn/json
 
 ## Giiant CRUDs
 
-    yii giiant-batch \
+```bash
+yii giiant-batch \
         --tables=core_dmstr_contact_log \
         --tablePrefix=core_dmstr \
         --modelNamespace=hrzg\\contact\\models \
@@ -236,4 +247,4 @@ For more information about schema see examples on: https://github.com/jdorn/json
         --crudViewPath=@hrzg/contact/views/crud \
         --crudControllerNamespace=hrzg\\contact\\controllers\\crud \
         --crudSearchModelNamespace=hrzg\\contact\\models\\search
-        
+```

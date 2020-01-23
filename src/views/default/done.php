@@ -6,19 +6,19 @@ use dmstr\modules\prototype\widgets\TwigWidget;
 /**
  * @var $schema string
  * @var $model ContactLog
- * @var array $schemaData
  */
 ?>
 
-<?= TwigWidget::widget(
+<?=
+ TwigWidget::widget(
     [
-        'key' => 'contact:' . $schema,
+        'key' => 'contact:' . $schema . ':send',
         'params' => [
             'model' => $model,
-            'schema' => $schemaData,
-        ],
+        ]
     ]
-) ?>
+)
+?>
 
 
 
