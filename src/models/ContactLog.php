@@ -12,6 +12,7 @@ use yii\web\HttpException;
 /**
  * This is the model class for table "app_dmstr_contact_log".
  *
+ * @property mixed $emailSubject
  * @property ContactTemplate $contactTemplate
  */
 class ContactLog extends BaseContactLog
@@ -24,6 +25,13 @@ class ContactLog extends BaseContactLog
     public function getContactTemplate()
     {
         return $this->hasOne(ContactTemplate::class, ['id' => 'contact_template_id']);
+    }
+
+    public function getEmailSubject()
+    {
+        $emailSubject = $this->contactTemplate->email_subject;
+        return empty($emailSubject) ? Yii::t('contact', 'Contact Form - {appName}',
+            ['appName' => getenv('APP_TITLE')]) : $emailSubject;
     }
 
     /**
@@ -39,10 +47,6 @@ class ContactLog extends BaseContactLog
     {
         $data = Json::decode($this->json);
 
-        if (empty($data)) {
-            return false;
-        }
-
         $text = $this->dataValue2txt($data);
         $message = Yii::createObject(Message::class);
 
@@ -50,8 +54,7 @@ class ContactLog extends BaseContactLog
 
         $message->to = $contactTemplate->to_email;
         $message->from = $contactTemplate->from_email;
-        $message->subject = empty($contactTemplate->email_subject) ? Yii::t('contact', 'Contact Form - {appName}',
-            ['appName' => getenv('APP_TITLE')]) : $contactTemplate->email_subject;
+        $message->subject = $this->emailSubject;
         $message->textBody = $text;
 
 
@@ -70,8 +73,6 @@ class ContactLog extends BaseContactLog
             return false;
         }
 
-        $data = Json::decode($this->json);
-
         $message = Yii::createObject(Message::class);
 
         if (!empty($contactTemplate->reply_to_email)) {
@@ -81,8 +82,7 @@ class ContactLog extends BaseContactLog
         $message->from = $contactTemplate->from_email;
         $message->to = $contactTemplate->to_email;
         $message->textBody = $contactTemplate->confirm_email_text;
-        $message->subject = empty($contactTemplate->email_subject) ? Yii::t('contact', 'Contact Form - {appName}',
-            ['appName' => getenv('APP_TITLE')]) : $contactTemplate->email_subject;
+        $message->subject = $this->emailSubject;
 
         return Yii::$app->mailer->send($message);
 

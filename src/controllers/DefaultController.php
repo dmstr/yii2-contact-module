@@ -6,11 +6,8 @@ use dmstr\modules\contact\models\ContactForm;
 use dmstr\modules\contact\models\ContactLog;
 use dmstr\modules\contact\models\ContactTemplate;
 use dmstr\modules\contact\Module;
-use JsonSchema\Validator;
 use yii;
 use yii\helpers\Json;
-use yii\swiftmailer\Message;
-use yii\validators\EmailValidator;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
 use yii\web\HttpException;
@@ -24,8 +21,6 @@ use yii\web\NotFoundHttpException;
  */
 class DefaultController extends Controller
 {
-
-    protected $schemaSettings = [];
 
     const CONTACT_FORM_ID_KEY = 'contact:formId';
 
@@ -92,13 +87,13 @@ class DefaultController extends Controller
 
     public function actionDone($schema)
     {
-        $model = ContactLog::find()->where(['id' => Yii::$app->session->get(self::CONTACT_FORM_ID_KEY)])->one();
+        $model = ContactLog::findOne(Yii::$app->session->get(self::CONTACT_FORM_ID_KEY));
 
         if ($model === null) {
             throw new ForbiddenHttpException(Yii::t('contact', 'You are not allowed to access this page directly.'));
         }
 
-        Yii::$app->session->set(self::CONTACT_FORM_ID_KEY,null);
+        Yii::$app->session->remove(self::CONTACT_FORM_ID_KEY);
 
         return $this->render(
             'done',
