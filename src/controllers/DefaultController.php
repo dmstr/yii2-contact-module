@@ -14,8 +14,6 @@ use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 
 /**
- * Default controller for the `contact` module
- *
  * @property mixed $settings
  * @property Module $module
  */
@@ -66,13 +64,13 @@ class DefaultController extends Controller
             }
             Yii::$app->session->set(self::CONTACT_FORM_ID_KEY, $contactLog->id);
 
-            if ($contactLog->sendMessage()) {
-                $contactLog->sendConfirmMessage();
+            if (!$contactLog->sendMessage()) {
                 Yii::$app->session->addFlash('success', Yii::t('contact', 'Your message was successfully sent.'));
+                $this->redirect(['done', 'schema' => $schema]);
             } else {
                 Yii::$app->session->addFlash('error', Yii::t('contact', 'Your message could not be sent.'));
+                $this->redirect(['index', 'schema' => $schema]);
             }
-            $this->redirect(['/contact/default/done', 'schema' => $schema]);
         }
 
         return $this->render(

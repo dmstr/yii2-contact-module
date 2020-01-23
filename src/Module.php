@@ -3,7 +3,9 @@
 namespace dmstr\modules\contact;
 
 /**
- * contact module definition class
+ * @property string $defaultRoute
+ * @property string $frontendLayout
+ * @property string $backendLayout
  */
 class Module extends \yii\base\Module
 {

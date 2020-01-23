@@ -116,11 +116,9 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
 			'from_email:email',
 			'to_email:email',
 			'form_schema:ntext',
-			'confirm_email_text:ntext',
-			'send_confirm_email:email',
 			'created_at',
-			/*'updated_at',*/
-			/*'reply_to_email:email',*/
+			'updated_at',
+			'reply_to_email:email',
 			/*'email_subject:email',*/
 		],
 	]); ?>

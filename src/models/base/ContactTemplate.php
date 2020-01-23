@@ -16,8 +16,6 @@ use Yii;
  * @property string $to_email
  * @property string $email_subject
  * @property string $form_schema
- * @property integer $send_confirm_email
- * @property string $confirm_email_text
  * @property string $created_at
  * @property string $updated_at
  * @property string $aliasModel
@@ -42,8 +40,7 @@ abstract class ContactTemplate extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'from_email', 'to_email'], 'required'],
-            [['form_schema', 'confirm_email_text'], 'string'],
-            [['send_confirm_email'], 'integer'],
+            [['form_schema'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
             [['name', 'from_email', 'reply_to_email', 'to_email', 'email_subject'], 'string', 'max' => 255],
             [['name'], 'unique']
@@ -63,8 +60,6 @@ abstract class ContactTemplate extends \yii\db\ActiveRecord
             'to_email' => Yii::t('models', 'To Email'),
             'email_subject' => Yii::t('models', 'Email Subject'),
             'form_schema' => Yii::t('models', 'Form Schema'),
-            'send_confirm_email' => Yii::t('models', 'Send Confirm Email'),
-            'confirm_email_text' => Yii::t('models', 'Confirm Email Text'),
             'created_at' => Yii::t('models', 'Created At'),
             'updated_at' => Yii::t('models', 'Updated At'),
         ];

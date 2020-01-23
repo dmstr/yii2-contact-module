@@ -37,55 +37,24 @@ class ContactLog extends BaseContactLog
     /**
      * Send message via mailer component
      *
-     * @param $this
-     *
      * @return bool
-     * @throws HttpException
-     * @throws yii\base\InvalidConfigException
      */
     public function sendMessage()
     {
-        $data = Json::decode($this->json);
 
-        $text = $this->dataValue2txt($data);
-        $message = Yii::createObject(Message::class);
 
         $contactTemplate = $this->contactTemplate;
 
-        $message->to = $contactTemplate->to_email;
-        $message->from = $contactTemplate->from_email;
-        $message->subject = $this->emailSubject;
-        $message->textBody = $text;
-
-
+        $message = Yii::$app->mailer->compose();
+        $message->setFrom($contactTemplate->from_email);
         if (!empty($contactTemplate->reply_to_email)) {
-            $message->replyTo = $contactTemplate->reply_to_email;
+            $message->setReplyTo($contactTemplate->reply_to_email);
         }
+        $message->setTo($contactTemplate->to_email);
+        $message->setSubject($this->emailSubject);
+        $message->setTextBody($this->dataValue2txt(Json::decode($this->json)));
 
-        return Yii::$app->mailer->send($message);
-    }
-
-    public function sendConfirmMessage()
-    {
-        $contactTemplate = $this->contactTemplate;
-        // if no confirmMail template is set as setting, nothing to send, so return
-        if (!$contactTemplate->send_confirm_email) {
-            return false;
-        }
-
-        $message = Yii::createObject(Message::class);
-
-        if (!empty($contactTemplate->reply_to_email)) {
-            $message->replyTo = $contactTemplate->reply_to_email;
-        }
-
-        $message->from = $contactTemplate->from_email;
-        $message->to = $contactTemplate->to_email;
-        $message->textBody = $contactTemplate->confirm_email_text;
-        $message->subject = $this->emailSubject;
-
-        return Yii::$app->mailer->send($message);
-
+        return $message->send();
     }
 
     /**

@@ -3,30 +3,18 @@
 
 Each form has a unique name, e.g. 'reservation'.
 
-Each Form has to be defined by a couple of settings in the section 'contact'
-
-settings:
-
-|Name                |Type   |Required   |Default        |
-|--------------------|-------|-----------|---------------|
-|formname.schema     |json   |yes        |-              |
-|formname.toEmail    |string |yes        |-              |
-|formname.fromEmail  |string |yes        |-              |
-|formname.subject    |string |no         |Contact Form   |
-|formname.confirmMail|string |no         |-              |
-|formname.returnPath |string |no         |-              |
-
 conventions:
 * if you have a property reply_to in your schema and send valid email address as value, this will be used as Reply-To: header in message
-* if you have a property reply_to AND formname.confirmMail setting is set, this will be used to send additional confirmation mail to the user (be careful not to generate spam!)
-* you can define a hidden field for reply_to in your schema which get the value from another field (e.g. email). see example below
-* if formname.returnPath setting is set, this will be used as ReturnPath: and Envelope From Header for the Mail. The address has to be a valid mail address where e.g. bounce Mail will be send to.
 
 Each form needs 2 Twig templates:
-* `contact:formname` (template in which the form will be rendered)
-* `contact:formname:send` (will be rendered as "thank you page" after message has been send)
+* `contact:<formname>` (template in which the form will be rendered)
+* `contact:<formname>:send` (will be rendered as "thank you page" after message has been send)
 
-For more information about schema see examples on: https://github.com/jdorn/json-editor 
+While <formname> must be replaced with your template name
+
+For more information about schema see examples on: https://github.com/json-editor/json-editor 
+
+To enable the export feature add *kartik\grid\Module* to your project modules
 
 ## Examples
 
@@ -35,10 +23,18 @@ For more information about schema see examples on: https://github.com/jdorn/json
 Form:
 ```twig
 {{ use('dmstr/jsoneditor/JsonEditorWidget') }}
-{{ use ('hrzg/widget/widgets') }}
 {{ use('yii/widgets/ActiveForm') }}
 
-{{ cell_widget({id: 'top'}) }}
+{% set script %}
+            JSONEditor.defaults.language = "de";
+            JSONEditor.defaults.languages.de = {
+            error_minLength: "Muss mindestens \{\{0\}\} Zeichen enthalten.",
+            error_notset: "Muss gesetzt sein",
+            error_notempty: "Pflichtfeld"
+            };
+{% endset %}
+{{ this.registerJs(script) }}
+{{ this.registerJs('JSONEditor.plugins.selectize.enable = true;') }}
 
 <div class="row">
     <div class="col-md-12">
@@ -49,18 +45,7 @@ Form:
             }
         }) %}
 
-        {% set script %}
-            JSONEditor.defaults.language = "de";
-            JSONEditor.defaults.languages.de = {
-            error_minLength: "Muss mindestens \{\{\{0\}\} Zeichen enthalten.",
-            error_notset: "Muss gesetzt sein",
-            error_notempty: "Pflichtfeld"
-            };
-        {% endset %}
-        {{ this.registerJs(script) }}
         {{ form.errorSummary(model) | raw }}
-        {{ this.registerJs('JSONEditor.plugins.selectize.enable = true;') }}
-
 
         {{ json_editor_widget_widget({
             'model': model,
@@ -84,18 +69,11 @@ Form:
         {{ active_form_end() }}
     </div>
 </div>
-
-{{ cell_widget({id: 'bottom'}) }}
 ```
 
 Done:
 ```twig
-{{ use ('hrzg/widget/widgets') }}
-{{ cell_widget({id: 'top'}) }}
-
 <div class="alert alert-success">{{ t('twig-widget', 'Thank you for your message') }}</div>
-
-{{ cell_widget({id: 'bottom'}) }}
 ```
 
 ### Settings schema

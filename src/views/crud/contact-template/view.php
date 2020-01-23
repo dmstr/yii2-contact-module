@@ -83,8 +83,6 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
 			'from_email:email',
 			'to_email:email',
 			'form_schema:ntext',
-			'confirm_email_text:ntext',
-			'send_confirm_email:email',
 			'created_at',
 			'updated_at',
 			'reply_to_email:email',

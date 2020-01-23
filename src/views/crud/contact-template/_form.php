@@ -58,12 +58,6 @@ use yii\helpers\StringHelper;
 <!-- attribute form_schema -->
 			<?php echo $form->field($model, 'form_schema')->textarea(['rows' => 6]) ?>
 
-<!-- attribute confirm_email_text -->
-			<?php echo $form->field($model, 'confirm_email_text')->textarea(['rows' => 6]) ?>
-
-<!-- attribute send_confirm_email -->
-			<?php echo $form->field($model, 'send_confirm_email')->textInput() ?>
-
 <!-- attribute created_at -->
 			<?php echo $form->field($model, 'created_at')->textInput() ?>
 

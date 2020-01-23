@@ -26,8 +26,8 @@ class ContactTemplate extends ContactTemplateModel
 	 */
 	public function rules() {
 		return [
-			[['id', 'send_confirm_email'], 'integer'],
-			[['name', 'from_email', 'reply_to_email', 'to_email', 'email_subject', 'form_schema', 'confirm_email_text', 'created_at', 'updated_at'], 'safe'],
+			[['id'], 'integer'],
+			[['name', 'from_email', 'reply_to_email', 'to_email', 'email_subject', 'form_schema', 'created_at', 'updated_at'], 'safe'],
 		];
 	}
 
@@ -67,7 +67,6 @@ class ContactTemplate extends ContactTemplateModel
 
 		$query->andFilterWhere([
 				'id' => $this->id,
-				'send_confirm_email' => $this->send_confirm_email,
 				'created_at' => $this->created_at,
 				'updated_at' => $this->updated_at,
 			]);
@@ -77,8 +76,7 @@ class ContactTemplate extends ContactTemplateModel
 		->andFilterWhere(['like', 'reply_to_email', $this->reply_to_email])
 		->andFilterWhere(['like', 'to_email', $this->to_email])
 		->andFilterWhere(['like', 'email_subject', $this->email_subject])
-		->andFilterWhere(['like', 'form_schema', $this->form_schema])
-		->andFilterWhere(['like', 'confirm_email_text', $this->confirm_email_text]);
+		->andFilterWhere(['like', 'form_schema', $this->form_schema]);
 
 		return $dataProvider;
 	}

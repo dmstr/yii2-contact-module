@@ -60,10 +60,6 @@ class m200123_081049_convert_settings_to_contact_template extends Migration
                     case 'subject':
                         $columns['email_subject'] = $value;
                         break;
-                    case 'confirmMail':
-                        $columns['send_confirm_email'] = 1;
-                        $columns['confirm_email_text'] = $value;
-                        break;
                 }
                 $settingsIds[] = $settingRow['id'];
             }

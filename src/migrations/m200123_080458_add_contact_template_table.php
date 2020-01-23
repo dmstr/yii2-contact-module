@@ -20,8 +20,6 @@ class m200123_080458_add_contact_template_table extends Migration
                 'to_email' => $this->string()->notNull(),
                 'email_subject' => $this->string(),
                 'form_schema' => $this->text(),
-                'send_confirm_email' => $this->tinyInteger(1)->notNull()->defaultValue(0),
-                'confirm_email_text' => $this->text(),
                 'created_at' => $this->dateTime(),
                 'updated_at' => $this->dateTime()
             ]);

@@ -38,10 +38,6 @@ use yii\widgets\ActiveForm;
 
 		<?php // echo $form->field($model, 'form_schema') ?>
 
-		<?php // echo $form->field($model, 'send_confirm_email') ?>
-
-		<?php // echo $form->field($model, 'confirm_email_text') ?>
-
 		<?php // echo $form->field($model, 'created_at') ?>
 
 		<?php // echo $form->field($model, 'updated_at') ?>

@@ -9,12 +9,6 @@ namespace dmstr\modules\contact\models\query;
  */
 class ContactLogQuery extends \yii\db\ActiveQuery
 {
-    /*public function active()
-    {
-        $this->andWhere('[[status]]=1');
-        return $this;
-    }*/
-
     /**
      * @inheritdoc
      * @return \dmstr\modules\contact\models\ContactLog[]|array
