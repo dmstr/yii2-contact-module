@@ -2,6 +2,7 @@
 
 namespace dmstr\modules\contact\controllers;
 
+use dmstr\modules\contact\events\MessageEvent;
 use dmstr\modules\contact\models\ContactForm;
 use dmstr\modules\contact\models\ContactLog;
 use dmstr\modules\contact\models\ContactTemplate;
@@ -19,7 +20,6 @@ use yii\web\NotFoundHttpException;
  */
 class DefaultController extends Controller
 {
-
     const CONTACT_FORM_ID_KEY = 'contact:formId';
 
     public function init()
@@ -40,7 +40,6 @@ class DefaultController extends Controller
      */
     public function actionIndex($schema)
     {
-
         $contactSchema = ContactTemplate::findOne(['name' => $schema]);
 
         if ($contactSchema === null) {
@@ -50,7 +49,6 @@ class DefaultController extends Controller
         $contactForm = new ContactForm([
             'contact_template_id' => $contactSchema->id
         ]);
-
 
         if ($contactForm->load(Yii::$app->request->post()) && $contactForm->validate()) {
 
@@ -62,14 +60,23 @@ class DefaultController extends Controller
             if (!$contactLog->save()) {
                 throw new HttpException(500, 'Your message could not be sent.');
             }
+
             Yii::$app->session->set(self::CONTACT_FORM_ID_KEY, $contactLog->id);
+
+            $event = new MessageEvent();
+            $event->model = $contactLog;
+            $this->trigger(MessageEvent::EVENT_BEFORE_MESSAGE_SENT, $event);
 
             if ($contactLog->sendMessage()) {
                 Yii::$app->session->addFlash('success', Yii::t('contact', 'Your message was successfully sent.'));
                 $this->redirect(['done', 'schema' => $schema]);
+
+                $this->trigger(MessageEvent::EVENT_AFTER_MESSAGE_SENT, $event);
             } else {
                 Yii::$app->session->addFlash('error', Yii::t('contact', 'Your message could not be sent.'));
                 $this->redirect(['index', 'schema' => $schema]);
+
+                $this->trigger(MessageEvent::EVENT_SENT_MESSAGE_ERROR, $event);
             }
         }
 
