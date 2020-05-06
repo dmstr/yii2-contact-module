@@ -64,7 +64,7 @@ class DefaultController extends Controller
             }
             Yii::$app->session->set(self::CONTACT_FORM_ID_KEY, $contactLog->id);
 
-            if (!$contactLog->sendMessage()) {
+            if ($contactLog->sendMessage()) {
                 Yii::$app->session->addFlash('success', Yii::t('contact', 'Your message was successfully sent.'));
                 $this->redirect(['done', 'schema' => $schema]);
             } else {
