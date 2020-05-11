@@ -50,7 +50,9 @@ class ContactLog extends BaseContactLog
         if (!empty($contactTemplate->reply_to_email)) {
             $message->setReplyTo($contactTemplate->reply_to_email);
         }
-        $message->setTo($contactTemplate->to_email);
+
+        $to = array_filter(array_map('trim', explode(',', $contactTemplate->to_email)));
+        $message->setTo($to);
         $message->setSubject($this->emailSubject);
         $message->setTextBody($this->dataValue2txt(Json::decode($this->json)));
 
