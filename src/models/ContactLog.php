@@ -4,10 +4,10 @@ namespace dmstr\modules\contact\models;
 
 use dmstr\modules\contact\models\base\ContactLog as BaseContactLog;
 use Yii;
+use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
+use yii\db\Expression;
 use yii\helpers\Json;
-use yii\swiftmailer\Message;
-use yii\web\HttpException;
 
 /**
  * This is the model class for table "app_dmstr_contact_log".
@@ -18,6 +18,15 @@ use yii\web\HttpException;
 class ContactLog extends BaseContactLog
 {
 
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+        $behaviors['timestamp'] = [
+            'class' => TimestampBehavior::class,
+            'value' => new Expression('NOW()')
+        ];
+        return $behaviors;
+    }
 
     /**
      * @return ActiveQuery
