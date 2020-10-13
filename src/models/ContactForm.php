@@ -17,8 +17,11 @@ use yii\helpers\Json;
  */
 class ContactForm extends Model
 {
+    const SCENARIO_CAPTCHA = 'captcha';
+
     public $contact_template_id;
     public $json;
+    public $captcha;
 
     public function getSchema()
     {
@@ -48,9 +51,9 @@ class ContactForm extends Model
                         $this->addError($error['property'], "{$error['property']}: {$error['message']}");
                     }
                 }
-
             }
         ];
+        $rules [] = ['captcha', 'captcha', 'captchaAction' => 'contact/default/captcha', 'on' => self::SCENARIO_CAPTCHA];
         return $rules;
     }
 }

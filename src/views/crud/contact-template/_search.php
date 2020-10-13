@@ -36,6 +36,8 @@ use yii\widgets\ActiveForm;
 
 		<?php // echo $form->field($model, 'email_subject') ?>
 
+		<?php // echo $form->field($model, 'captcha') ?>
+
 		<?php // echo $form->field($model, 'form_schema') ?>
 
 		<?php // echo $form->field($model, 'created_at') ?>
