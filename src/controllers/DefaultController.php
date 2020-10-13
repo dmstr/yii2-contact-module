@@ -8,6 +8,7 @@ use dmstr\modules\contact\models\ContactLog;
 use dmstr\modules\contact\models\ContactTemplate;
 use dmstr\modules\contact\Module;
 use yii;
+use yii\captcha\CaptchaAction;
 use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
@@ -49,6 +50,11 @@ class DefaultController extends Controller
         $contactForm = new ContactForm([
             'contact_template_id' => $contactSchema->id
         ]);
+
+        if ($contactSchema->captcha === 1) {
+            $contactForm->scenario = ContactForm::SCENARIO_CAPTCHA;
+        }
+
 
         if ($contactForm->load(Yii::$app->request->post()) && $contactForm->validate()) {
 
@@ -108,6 +114,23 @@ class DefaultController extends Controller
             ]
         );
 
+    }
+
+    public function actions()
+    {
+        $backColor = Yii::$app->settings->getOrSet('backColor', '0x333333', 'captcha', 'string');
+        $foreColor = Yii::$app->settings->getOrSet('foreColor', '0xFFFFFF', 'captcha', 'string');
+        $actions = parent::actions();
+        $actions['captcha'] = [
+            'class' => CaptchaAction::class,
+            'testLimit' => 100,
+            'width' => 140,
+            'height' => 75,
+            'offset' => -1,
+            'backColor' =>  hexdec($backColor),
+            'foreColor' => hexdec($foreColor)
+        ];
+        return $actions;
     }
 
 }
