@@ -1,77 +1,125 @@
+## Configuring template
 
-## Configuration
+Navigate to `/contact/crud/contact-template` to create a new form template.
 
-Each form has a unique name, e.g. 'reservation'.
+* Name: a unique name, e.g. 'reservation'
+* From Email: valid email
+* To Email: valid email
+* Captcha: this tells the contact module that a captcha will be used and that it has to validated against it (sets model scenario to captcha)
+* Form Schema: json-schema used to build a form with `dmstr/jsoneditor/JsonEditorWidget` (For more information about schema see examples on: https://github.com/json-editor/json-editor 
+)
 
-conventions:
+## conventions:
+
 * if you have a property reply_to in your schema and send valid email address as value, this will be used as Reply-To: header in message
 
-Each form needs 2 Twig templates:
-* `contact:<formname>` (template in which the form will be rendered)
-* `contact:<formname>:send` (will be rendered as "thank you page" after message has been send)
+## Twig templates (Views)
 
-While <formname> must be replaced with your template name
+Each form needs 2 Twig templates. Navigate to `/prototype/twig/index` to create them:
 
-For more information about schema see examples on: https://github.com/json-editor/json-editor 
+* `contact:FORM_NAME`: template in which the form will be rendered
+* `contact:FORM_NAME:send`: will be rendered as "thank you page" after message has been send
 
-To enable the export feature add *kartik\grid\Module* to your project modules
+While `FORM_NAME` must be replaced with your template name
 
-## Examples
+* The form can be seen at `/contact/default/?schema=contact:FORM_NAME`
+* The "thank you page" can be seen at `/contact/default/done?schema=contact:FORM_NAME`
 
-### Twig layout (
+### Form Twig layout
 
-Form:
 ```twig
 {{ use('dmstr/jsoneditor/JsonEditorWidget') }}
 {{ use('yii/widgets/ActiveForm') }}
 
-{% set script %}
-            JSONEditor.defaults.language = "de";
-            JSONEditor.defaults.languages.de = {
-            error_minLength: "Muss mindestens \{\{0\}\} Zeichen enthalten.",
-            error_notset: "Muss gesetzt sein",
-            error_notempty: "Pflichtfeld"
-            };
-{% endset %}
-{{ this.registerJs(script) }}
-{{ this.registerJs('JSONEditor.plugins.selectize.enable = true;') }}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            {% set form = active_form_begin({
+                'id': 'contact-form',
+                'action' : '',
+                'options': {
+                }
+            }) %}
+    
+            {{ form.errorSummary(model) | raw }}
+    
+            {{ json_editor_widget_widget({
+                'model': model,
+                'attribute': 'json',
+                'options': {
+                    'id': 'contact-json'
+                },
+                'clientOptions': {
+                    'theme': 'bootstrap3',
+                    'disable_collapse': true,
+                    'disable_edit_json': true,
+                    'disable_properties': true,
+                    'no_additional_properties': true,
+                    'show_errors': 'interaction'
+                },
+                'schema': schema,
+            }) }}
 
-<div class="row">
-    <div class="col-md-12">
-        {% set form = active_form_begin({
-            'id': 'contact-form',
-            'action' : '',
-            'options': {
-            }
-        }) %}
-
-        {{ form.errorSummary(model) | raw }}
-
-        {{ json_editor_widget_widget({
-            'model': model,
-            'attribute': 'json',
-            'options': {
-                'id': 'contact-json'
-            },
-            'clientOptions': {
-                'theme': 'bootstrap3',
-                'disable_collapse': true,
-                'disable_edit_json': true,
-                'disable_properties': true,
-                'no_additional_properties': true,
-                'show_errors': 'always'
-            },
-            'schema': schema,
-        }) }}
-
-        <button type="submit" class="btn btn-primary">{{ t('twig-widget', 'Send') }}</button>
-
-        {{ active_form_end() }}
+            <button type="submit" class="btn btn-primary">{{ t('twig-widget', 'Send') }}</button>
+            
+            {{ active_form_end() }}
+        </div>
     </div>
 </div>
 ```
 
-Done:
+### Form Twig layout with captcha (requires `captcha` activate in the contact-template)
+
+```twig
+{{ use('dmstr/jsoneditor/JsonEditorWidget') }}
+{{ use('yii/widgets/ActiveForm') }}
+{{ use('yii/captcha/Captcha') }}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            {% set form = active_form_begin({
+                'id': 'contact-form',
+                'action' : '',
+                'options': {
+                }
+            }) %}
+    
+            {{ form.errorSummary(model) | raw }}
+    
+            {{ json_editor_widget_widget({
+                'model': model,
+                'attribute': 'json',
+                'options': {
+                    'id': 'contact-json'
+                },
+                'clientOptions': {
+                    'theme': 'bootstrap3',
+                    'disable_collapse': true,
+                    'disable_edit_json': true,
+                    'disable_properties': true,
+                    'no_additional_properties': true,
+                    'show_errors': 'interaction'
+                },
+                'schema': schema,
+            }) }}
+
+            {{ Captcha_widget({
+                model: model,
+                attribute: 'captcha',
+                captchaAction: '/contact/default/captcha'
+            }) }}
+
+            <button type="submit" class="btn btn-primary">{{ t('twig-widget', 'Send') }}</button>
+            
+            {{ active_form_end() }}
+        </div>
+    </div>
+</div>
+```
+
+### "Thank you page" Twig layout
+
 ```twig
 <div class="alert alert-success">{{ t('twig-widget', 'Thank you for your message') }}</div>
 ```
@@ -213,6 +261,9 @@ Done:
 }
 ```
 
+## Export
+
+To enable the export feature add *kartik\grid\Module* to your project modules
 
 ## Giiant CRUDs
 
