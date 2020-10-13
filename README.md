@@ -22,8 +22,8 @@ Each form needs 2 Twig templates. Navigate to `/prototype/twig/index` to create 
 
 While `FORM_NAME` must be replaced with your template name
 
-* The form can be seen at `/contact/default/?schema=contact:FORM_NAME`
-* The "thank you page" can be seen at `/contact/default/done?schema=contact:FORM_NAME`
+* The form can be seen at `/contact/default/?schema=FORM_NAME`
+* The "thank you page" can be seen at `/contact/default/done?schema=FORM_NAME`
 
 ### Form Twig layout
 
@@ -117,6 +117,10 @@ While `FORM_NAME` must be replaced with your template name
     </div>
 </div>
 ```
+
+
+* The background and foreground colors of the captcha can be defined in the settings module under the `captcha` section.
+It uses a particular format for colors but the last 6 characters follow the css hex color code(eg 0xff0000 is red and 0x00ff00 is green)
 
 ### "Thank you page" Twig layout
 
