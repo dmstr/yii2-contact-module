@@ -29,4 +29,15 @@ class ContactTemplate extends BaseContactTemplate
         ];
         return $behaviors;
     }
+
+    /**
+     * @return array
+     */
+    public static function optsCaptcha()
+    {
+        return [
+            0 => \Yii::t('contact', 'No'),
+            1 => \Yii::t('contact', 'Yes'),
+        ];
+    }
 }

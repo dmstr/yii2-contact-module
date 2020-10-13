@@ -15,6 +15,7 @@ use Yii;
  * @property string $reply_to_email
  * @property string $to_email
  * @property string $email_subject
+ * @property integer $captcha
  * @property string $form_schema
  * @property string $created_at
  * @property string $updated_at
@@ -40,6 +41,7 @@ abstract class ContactTemplate extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'from_email', 'to_email'], 'required'],
+            [['captcha'], 'integer'],
             [['form_schema'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
             [['name', 'from_email', 'reply_to_email', 'to_email', 'email_subject'], 'string', 'max' => 255],
@@ -59,6 +61,7 @@ abstract class ContactTemplate extends \yii\db\ActiveRecord
             'reply_to_email' => Yii::t('models', 'Reply To Email'),
             'to_email' => Yii::t('models', 'To Email'),
             'email_subject' => Yii::t('models', 'Email Subject'),
+            'captcha' => Yii::t('models', 'Captcha'),
             'form_schema' => Yii::t('models', 'Form Schema'),
             'created_at' => Yii::t('models', 'Created At'),
             'updated_at' => Yii::t('models', 'Updated At'),

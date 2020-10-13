@@ -55,6 +55,11 @@ use yii\helpers\StringHelper;
 <!-- attribute to_email -->
 			<?php echo $form->field($model, 'to_email')->textInput(['maxlength' => true]) ?>
 
+<!-- attribute captcha -->
+			<?php echo                         $form->field($model, 'captcha')->dropDownList(
+	dmstr\modules\contact\models\ContactTemplate::optscaptcha()
+); ?>
+
 <!-- attribute form_schema -->
 			<?php echo $form->field($model, 'form_schema')->textarea(['rows' => 6]) ?>
 
