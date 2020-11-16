@@ -60,6 +60,8 @@ While `FORM_NAME` must be replaced with your template name
                 'schema': schema,
             }) }}
 
+            {{ form.field(model, 'gdpr', {'template': "{input}\n{label}\n{hint}\n{error}"}).checkbox({}, false).label(model.getAttributeHint('gdpr')).hint(false) | raw }}
+
             <button type="submit" class="btn btn-primary">{{ t('twig-widget', 'Send') }}</button>
             
             {{ active_form_end() }}
@@ -109,6 +111,8 @@ While `FORM_NAME` must be replaced with your template name
                 attribute: 'captcha',
                 captchaAction: '/contact/default/captcha'
             }) }}
+
+            {{ form.field(model, 'gdpr', {'template': "{input}\n{label}\n{hint}\n{error}"}).checkbox({}, false).label(model.getAttributeHint('gdpr')).hint(false) | raw }}
 
             <button type="submit" class="btn btn-primary">{{ t('twig-widget', 'Send') }}</button>
             
