@@ -20,21 +20,6 @@ class ExportController extends Controller
 
     protected $schemaSettings = [];
 
-    public function behaviors()
-    {
-        $behaviors = parent::behaviors();
-        $behaviors['access'] = [
-            'class' => AccessControl::class,
-            'rules' => [
-                [
-                    'allow' => true,
-                    'roles' => ['Editor']
-                ]
-            ]
-        ];
-        return $behaviors;
-    }
-
     public function init()
     {
         parent::init();

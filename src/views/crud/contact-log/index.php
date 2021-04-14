@@ -64,7 +64,7 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
 			'encodeLabels' => false,
 			'items' => [
 				[
-					'url' => ['/crud/contact-template/index'],
+					'url' => ['/'.$this->context->module->id.'/crud/contact-template/index'],
 					'label' => '<i class="glyphicon glyphicon-arrow-left"></i> ' . Yii::t('models', 'Contact Template'),
 				],
 

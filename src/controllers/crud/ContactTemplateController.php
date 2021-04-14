@@ -8,14 +8,13 @@
 
 namespace dmstr\modules\contact\controllers\crud;
 
-use dmstr\web\traits\AccessBehaviorTrait;
 
 /**
  * This is the class for controller "ContactTemplateController".
  */
 class ContactTemplateController extends \dmstr\modules\contact\controllers\crud\base\ContactTemplateController
 {
-    use AccessBehaviorTrait;
+
 
     public function init()
     {
