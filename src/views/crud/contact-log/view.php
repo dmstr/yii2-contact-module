@@ -84,8 +84,8 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
 				'format' => 'html',
 				'attribute' => 'contact_template_id',
 				'value' => ($model->contactTemplate ?
-					Html::a('<i class="glyphicon glyphicon-list"></i>', ['/crud/contact-template/index']).' '.
-					Html::a('<i class="glyphicon glyphicon-circle-arrow-right"></i> '.$model->contactTemplate->name, ['/crud/contact-template/view', 'id' => $model->contactTemplate->id, ]).' '.
+					Html::a('<i class="glyphicon glyphicon-list"></i>', ['/'.$this->context->module->id.'/crud/contact-template/index']).' '.
+					Html::a('<i class="glyphicon glyphicon-circle-arrow-right"></i> '.$model->contactTemplate->name, ['/'.$this->context->module->id.'/crud/contact-template/view', 'id' => $model->contactTemplate->id, ]).' '.
 					Html::a('<i class="glyphicon glyphicon-paperclip"></i>', ['create', 'ContactLog'=>['contact_template_id' => $model->contact_template_id]])
 					:
 					'<span class="label label-warning">?</span>'),
