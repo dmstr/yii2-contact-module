@@ -11,9 +11,11 @@ class m200123_115704_alter_contact_log_table extends Migration
 
     public function up()
     {
+        $dateTimeType = $this->db->getDriverName() === 'mysql' ? 'DATETIME' : 'TIMESTAMP';
+
         $this->alterColumn('{{%dmstr_contact_log}}', 'json', 'TEXT NOT NULL');
-        $this->alterColumn('{{%dmstr_contact_log}}', 'created_at', 'DATETIME NULL');
-        $this->addColumn('{{%dmstr_contact_log}}', 'updated_at', 'DATETIME NULL AFTER created_at');
+        $this->alterColumn('{{%dmstr_contact_log}}', 'created_at', $dateTimeType);
+        $this->addColumn('{{%dmstr_contact_log}}', 'updated_at', $dateTimeType);
 
         $schemaCluster = [];
 
@@ -32,7 +34,14 @@ class m200123_115704_alter_contact_log_table extends Migration
         }
 
         $this->renameColumn('{{%dmstr_contact_log}}', 'schema', 'contact_template_id');
-        $this->alterColumn('{{%dmstr_contact_log}}', 'contact_template_id', 'INT(11) NOT NULL');
+
+         if ($this->db->getDriverName() === 'pgsql') {
+             $columnType = $this->integer() . ' USING contact_template_id::integer';
+         } else {
+             $columnType = 'INT(11) NULL';
+         }
+
+        $this->alterColumn('{{%dmstr_contact_log}}', 'contact_template_id', $columnType);
 
     }
 
