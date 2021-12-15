@@ -12,7 +12,9 @@ use yii\db\Expression;
  */
 class ContactTemplate extends BaseContactTemplate
 {
-    use ActiveRecordAccessTrait;
+    use ActiveRecordAccessTrait {
+        find as traitFind;
+}
 
     /**
      * @inheritdoc
@@ -65,5 +67,11 @@ class ContactTemplate extends BaseContactTemplate
             'value' => self::getDefaultAccessUpdateDelete()
         ];
         return $rules;
+    }
+
+    public static function find()
+    {
+        self::$enableRecursiveRoles = true;
+        return self::traitFind();
     }
 }
