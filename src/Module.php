@@ -8,6 +8,7 @@ use dmstr\web\traits\AccessBehaviorTrait;
  * @property string $defaultRoute
  * @property string $frontendLayout
  * @property string $backendLayout
+ * @property bool $sendHtmlMails
  */
 class Module extends \yii\base\Module
 {
@@ -19,6 +20,7 @@ class Module extends \yii\base\Module
     public $defaultRoute = 'backend';
     public $frontendLayout = '//main';
     public $backendLayout = '@backend/views/layouts/box';
+    public $sendHtmlMails = false;
 
     public function beforeAction($action)
     {
