@@ -134,6 +134,10 @@ class ContactLog extends BaseContactLog
         if (empty(static::$_schemaCache)) {
             static::$_schemaCache = Json::decode($this->contactTemplate->form_schema);
         }
-        return static::$_schemaCache['properties'][$attribute]['title'] ?? $attribute;
+        // When title is empty e.g. " " (needed for hidden inputs) return the attribute name
+        if (isset(static::$_schemaCache['properties'][$attribute]['title']) && !empty(trim(static::$_schemaCache['properties'][$attribute]['title']))) {
+            return static::$_schemaCache['properties'][$attribute]['title'];
+        }
+        return $attribute;
     }
 }
