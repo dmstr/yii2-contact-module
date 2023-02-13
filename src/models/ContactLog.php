@@ -8,6 +8,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\Expression;
 use yii\helpers\Json;
+use yii\validators\EmailValidator;
 
 /**
  * This is the model class for table "app_dmstr_contact_log".
@@ -51,13 +52,23 @@ class ContactLog extends BaseContactLog
     public function sendMessage()
     {
 
+        $validator = new EmailValidator();
 
         $contactTemplate = $this->contactTemplate;
 
+        $data = Json::decode($this->json);
+
         $message = Yii::$app->mailer->compose();
         $message->setFrom($contactTemplate->from_email);
+        // if reply_to_email is set in template we always use this
         if (!empty($contactTemplate->reply_to_email)) {
             $message->setReplyTo($contactTemplate->reply_to_email);
+        } else {
+            # set optional Reply-To Header if reply_to is set in schema and is valid email address
+            if ((! empty($data['reply_to'])) && ($validator->validate($data['reply_to']))){
+                $message->setReplyTo($data['reply_to']);
+            }
+        }
         }
 
         $to = array_filter(array_map('trim', explode(',', $contactTemplate->to_email)));
