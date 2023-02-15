@@ -35,7 +35,7 @@ class ContactTemplate extends BaseContactTemplate
     public function rules()
     {
         $rules = parent::rules();
-        $rules['single_mail_value'] = [['from_email', 'reply_to_email'], 'email', 'skipOnEmpty' => true];
+        $rules['single_mail_value'] = [['from_email', 'reply_to_email', 'return_path'], 'email', 'skipOnEmpty' => true];
         $rules['multi_mail_value'] = [['to_email'], 'validateMultiMailValues', 'skipOnEmpty' => true];
         return $rules;
     }
@@ -44,7 +44,9 @@ class ContactTemplate extends BaseContactTemplate
     {
         $hints = parent::attributeHints();
         $hints['to_email'] = Yii::t('contact', 'One or more email addresses separated by comma');
-        $hints['reply_to_email'] = Yii::t('contact', 'If set, this will be used as Reply-To for all Emails');
+        $hints['reply_to_email'] = Yii::t('contact', 'If set, this will be used as "Reply-To" for ALL Emails');
+        $hints['return_path'] = Yii::t('contact', 'If set, this will be used as "Return-Path" (address for bounce mails)');
+        $hints['reply_to_schema_property'] = Yii::t('contact', 'Email property name from json schema that should be used as "Reply-To" (if reply_to_email is empty)');
         return $hints;
     }
 

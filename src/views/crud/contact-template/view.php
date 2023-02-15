@@ -82,12 +82,18 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
 			'name',
 			'from_email:email',
 			'to_email:email',
+            'reply_to_email:email',
+            'reply_to_schema_property',
+            'return_path',
+            'email_subject:email',
 			'captcha',
-			'form_schema:ntext',
-			'created_at',
-			'updated_at',
-			'reply_to_email:email',
-			'email_subject:email',
+            [
+                'attribute' => 'form_schema',
+                'format' => 'raw',
+                'value' => "<pre>" . htmlspecialchars($model->form_schema) . "</pre>",
+            ],
+            'created_at',
+            'updated_at',
 		],
 	]); ?>
 

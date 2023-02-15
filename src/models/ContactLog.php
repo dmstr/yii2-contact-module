@@ -60,15 +60,23 @@ class ContactLog extends BaseContactLog
 
         $message = Yii::$app->mailer->compose();
         $message->setFrom($contactTemplate->from_email);
-        // if reply_to_email is set in template we always use this
+        // if reply_to_email is set in template we always use this, will be validated in template model
         if (!empty($contactTemplate->reply_to_email)) {
             $message->setReplyTo($contactTemplate->reply_to_email);
         } else {
-            # set optional Reply-To Header if reply_to is set in schema and is valid email address
-            if ((! empty($data['reply_to'])) && ($validator->validate($data['reply_to']))){
-                $message->setReplyTo($data['reply_to']);
+            # set optional Reply-To Header from schema property if set in schema and is valid email address
+            $reply_to_property = $contactTemplate->reply_to_schema_property;
+            if ((!empty($reply_to_property)) && (! empty($data[$reply_to_property])) && ($validator->validate($data[$reply_to_property]))){
+                $message->setReplyTo($data[$reply_to_property]);
             }
         }
+
+        # set optional ReturnPath Header, as setReturnPath() is not required by the yii MessageInterface,
+        # we first check that Method exists
+        if (method_exists($message, 'setReturnPath')) {
+            if ((!empty($contactTemplate->return_path)) && ($validator->validate($contactTemplate->return_path))) {
+                $message->setReturnPath($contactTemplate->return_path);
+            }
         }
 
         $to = array_filter(array_map('trim', explode(',', $contactTemplate->to_email)));

@@ -115,12 +115,14 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
 			'name',
 			'from_email:email',
 			'to_email:email',
+            'reply_to_email:email',
+            'reply_to_schema_property:ntext',
+            'return_path:email',
+            'email_subject:ntext',
 			'captcha',
-			'form_schema:ntext',
-			'created_at',
-			'updated_at',
-			/*'reply_to_email:email',*/
-			/*'email_subject:email',*/
+			/* 'form_schema:ntext', */
+			/* 'created_at', */
+			/* 'updated_at', */
 		],
 	]); ?>
     </div>
