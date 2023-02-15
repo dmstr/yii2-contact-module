@@ -64,10 +64,10 @@ class ContactLog extends BaseContactLog
         if (!empty($contactTemplate->reply_to_email)) {
             $message->setReplyTo($contactTemplate->reply_to_email);
         } else {
-            # set optional Reply-To Header from schema property if set in schema and is valid email address
-            $reply_to_property = $contactTemplate->reply_to_schema_property;
-            if ((!empty($reply_to_property)) && (! empty($data[$reply_to_property])) && ($validator->validate($data[$reply_to_property]))){
-                $message->setReplyTo($data[$reply_to_property]);
+            # check and set optional Reply-To Header from schema property if set in schema and is valid email address
+            $reply_to_property_value = $this->getReplyToFromSchemaData($contactTemplate->reply_to_schema_property, $data);
+            if ((!empty($reply_to_property_value)) && ($validator->validate($reply_to_property_value))){
+                $message->setReplyTo($reply_to_property_value);
             }
         }
 
@@ -85,6 +85,31 @@ class ContactLog extends BaseContactLog
         $message->setTextBody($this->dataValue2txt(Json::decode($this->json)));
 
         return $message->send();
+    }
+
+    protected function getReplyToFromSchemaData($schema_property_name, $data)
+    {
+        #Yii::debug($schema_property_name);
+
+        // recursive property name
+        if (preg_match('#\w+\.\w+#', $schema_property_name)) {
+            $keyParts = explode('.', $schema_property_name);
+            $checked = $data;
+            foreach ($keyParts as $key) {
+                #Yii::debug('check: ' . $key);
+                if (empty($checked[$key])) {
+                    return null;
+                }
+                $checked = $checked[$key];
+            }
+            return $checked;
+        }
+
+        // simple property name
+        if (!empty($data[$schema_property_name])) {
+            return $data[$schema_property_name];
+        }
+        return null;
     }
 
     /**
