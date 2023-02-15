@@ -63,7 +63,7 @@ abstract class ContactTemplate extends \yii\db\ActiveRecord
             'reply_to_email' => Yii::t('models', 'Reply To Email'),
             'to_email' => Yii::t('models', 'To Email'),
             'return_path' => Yii::t('models', 'Return Path'),
-            'reply_to_schema_property' => Yii::t('models', 'Reply to Schema Property'),
+            'reply_to_schema_property' => Yii::t('models', 'Reply To Schema Property'),
             'email_subject' => Yii::t('models', 'Email Subject'),
             'captcha' => Yii::t('models', 'Captcha'),
             'form_schema' => Yii::t('models', 'Form Schema'),
