@@ -6,6 +6,7 @@
  */
 
 
+use dmstr\modules\contact\models\ContactTemplate;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\GridView;
@@ -63,7 +64,10 @@ $actionColumnTemplateString = '<div class="action-buttons">'.$actionColumnTempla
 			],
 			'encodeLabels' => false,
 			'items' => [
-
+                [
+                    'url' => ['/prototype/twig/index', 'Twig[key]' => ContactTemplate::TMPL_PREFIX],
+                    'label' => '<i class="glyphicon glyphicon-arrow-left"></i> ' . Yii::t('cruds', 'Twig Templates'),
+                ],
 			]
 		],
 		'options' => [

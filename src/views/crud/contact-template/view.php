@@ -6,6 +6,7 @@
  */
 
 
+use dmstr\modules\contact\models\ContactTemplate;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\GridView;
@@ -62,9 +63,36 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
 	'<span class="glyphicon glyphicon-plus"></span> ' . Yii::t('cruds', 'New'),
 	['create'],
 	['class' => 'btn btn-success']) ?>
+
+            <?php
+            $tmplName = ContactTemplate::TMPL_PREFIX . $model->name;
+            if ($twig = \dmstr\modules\prototype\models\Twig::findOne(['key' => $tmplName])) {
+                echo Html::a('<span class="glyphicon glyphicon-file"></span> '
+                             . Yii::t('cruds', 'Form Twig'), ['/prototype/twig/view', 'id' => $twig->id], ['class'=>'btn btn-success']);
+            } else {
+                echo Html::a('<span class="glyphicon glyphicon-file"></span> '
+                             . Yii::t('cruds', 'Create Form Twig'), ['/prototype/twig/create', 'Twig[key]' => $tmplName], ['class'=>'btn btn-warning']);
+
+            }
+            ?>
+
+            <?php
+            $tmplName = ContactTemplate::TMPL_PREFIX . $model->name . ContactTemplate::TMPL_SEND_SUFFIX;
+            if ($twig = \dmstr\modules\prototype\models\Twig::findOne(['key' => $tmplName])) {
+                echo Html::a('<span class="glyphicon glyphicon-file"></span> '
+                             . Yii::t('cruds', 'Send Twig'), ['/prototype/twig/view', 'id' => $twig->id], ['class'=>'btn btn-success']);
+            } else {
+                echo Html::a('<span class="glyphicon glyphicon-file"></span> '
+                             . Yii::t('cruds', 'Create Send Twig'), ['/prototype/twig/create', 'Twig[key]' => $tmplName], ['class'=>'btn btn-warning']);
+
+            }
+            ?>
         </div>
 
         <div class="pull-right">
+            <?php echo Html::a('<span class="glyphicon glyphicon-eye-open"></span> '
+                               . Yii::t('cruds', 'View in Frontend'), ['/contact/default', 'schema' => $model->name], ['class'=>'btn btn-default']) ?>
+
             <?php echo Html::a('<span class="glyphicon glyphicon-list"></span> '
 	. Yii::t('cruds', 'Full list'), ['index'], ['class'=>'btn btn-default']) ?>
         </div>
