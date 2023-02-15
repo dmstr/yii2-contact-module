@@ -99,12 +99,11 @@ class DefaultController extends Controller
     public function actionDone($schema)
     {
         $model = ContactLog::findOne(Yii::$app->session->get(self::CONTACT_FORM_ID_KEY));
+        Yii::$app->session->remove(self::CONTACT_FORM_ID_KEY);
 
         if ($model === null) {
-            throw new ForbiddenHttpException(Yii::t('contact', 'You are not allowed to access this page directly.'));
+            return $this->render('done-expired');
         }
-
-        Yii::$app->session->remove(self::CONTACT_FORM_ID_KEY);
 
         return $this->render(
             'done',
