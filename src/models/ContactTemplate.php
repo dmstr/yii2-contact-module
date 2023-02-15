@@ -14,6 +14,9 @@ use yii\validators\EmailValidator;
 class ContactTemplate extends BaseContactTemplate
 {
 
+    const TMPL_PREFIX = 'contact:';
+    const TMPL_SEND_SUFFIX = ':send';
+
     /**
      * @inheritdoc
      */
