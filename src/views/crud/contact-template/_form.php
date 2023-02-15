@@ -63,7 +63,7 @@ use yii\helpers\StringHelper;
 
             <!-- attribute return_path -->
             <?php echo $form->field($model, 'return_path')->textInput(['maxlength' => true]) ?>
-            
+
             <!-- attribute email_subject -->
             <?php echo $form->field($model, 'email_subject')->textInput(['maxlength' => true]) ?>
 

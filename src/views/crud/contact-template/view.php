@@ -107,13 +107,13 @@ $this->params['breadcrumbs'][] = Yii::t('cruds', 'View');
     <?php echo DetailView::widget([
 		'model' => $model,
 		'attributes' => [
-			'name',
+			'name:ntext',
 			'from_email:email',
 			'to_email:email',
             'reply_to_email:email',
-            'reply_to_schema_property',
-            'return_path',
-            'email_subject:email',
+            'reply_to_schema_property:ntext',
+            'return_path:email',
+            'email_subject:ntext',
 			'captcha',
             [
                 'attribute' => 'form_schema',
