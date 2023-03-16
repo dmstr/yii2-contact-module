@@ -20,7 +20,7 @@ class Module extends \yii\base\Module
     public $defaultRoute = 'backend';
     public $frontendLayout = '//main';
     public $backendLayout = '@backend/views/layouts/box';
-    public $exportFolder = '@backend/views/layouts/box';
+    public $exportFolder = '@runtime/contact/export';
     public $sendHtmlMails = false;
 
     public function beforeAction($action)
