@@ -36,6 +36,7 @@ use yii\i18n\Formatter;
                 'dataProvider' => $dataProvider,
                 'columns' => $columns,
                 'formatter' => ['class' => Formatter::class, 'nullDisplay' => ''],
+                'folder' => '@runtime/contact/export',
                 'exportConfig' => [
                     ExportMenu::FORMAT_PDF => false,
                     ExportMenu::FORMAT_TEXT => false,
