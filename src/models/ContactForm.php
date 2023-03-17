@@ -2,6 +2,7 @@
 
 namespace dmstr\modules\contact\models;
 
+use dmstr\jsoneditor\HTMLPurifierFilterValidator;
 use JsonSchema\Validator;
 use yii\base\Model;
 use yii\helpers\Json;
@@ -37,6 +38,10 @@ class ContactForm extends Model
     public function rules()
     {
         $rules = parent::rules();
+        $rules[] = [
+            'json',
+            HTMLPurifierFilterValidator::class
+        ];
         $rules[] = [
             'json',
             function ($attribute) {
