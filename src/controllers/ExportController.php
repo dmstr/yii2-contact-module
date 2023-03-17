@@ -74,6 +74,7 @@ class ExportController extends Controller
                 'columns' => $columns,
                 'schemaValues' => ArrayHelper::map(ContactTemplate::find()->all(), 'name', 'name'),
                 'schemaSelected' => $schema ?: false,
+                'folder' => $this->module->exportFolder,
             ]
         );
 
