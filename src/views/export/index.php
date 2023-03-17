@@ -9,6 +9,7 @@ use yii\i18n\Formatter;
 /**
  * @var string $schemaSelected
  * @var array $schemaValues
+ * @var string $folder
  */
 ?>
 <div class="box box-default">
@@ -36,6 +37,7 @@ use yii\i18n\Formatter;
                 'dataProvider' => $dataProvider,
                 'columns' => $columns,
                 'formatter' => ['class' => Formatter::class, 'nullDisplay' => ''],
+                'folder' => $folder,
                 'exportConfig' => [
                     ExportMenu::FORMAT_PDF => false,
                     ExportMenu::FORMAT_TEXT => false,
