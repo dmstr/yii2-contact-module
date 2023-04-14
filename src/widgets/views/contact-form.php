@@ -30,13 +30,23 @@ use yii\widgets\ActiveForm;
     ]);
 
     $form = ActiveForm::begin([
-        'action' => $submitUrl
+        'id' => 'contact-form-' . $contactTemplate->id,
+        'action' => $submitUrl,
+        'enableClientValidation' => false,
+        'enableClientScript' => false
     ]);
 
     echo $form->field($model, 'json')->widget(JsonEditorWidget::class, [
+        'id' => 'contactFormEditor' . $contactTemplate->id,
+        'options' => [
+            'id' => 'contactFormEditorJson' . $contactTemplate->id
+        ],
+        'containerOptions' => [
+            'id' => 'contact-form-json-editor-container-' . $contactTemplate->id,
+        ],
         'clientOptions' => $jsonEditorClientOptions,
         'schema' => $schemaData,
-    ]);
+    ])->label(false);
 
     if ($model->getScenario() === ContactFormModel::SCENARIO_CAPTCHA) {
         echo $form->field($model, 'captcha')->widget(Captcha::class, [

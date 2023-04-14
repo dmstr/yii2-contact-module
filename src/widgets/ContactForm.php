@@ -19,6 +19,13 @@ class ContactForm extends Widget
     public $schemaName;
 
     /**
+     * Optional form model for loading values
+     *
+     * @var ContactFormModel|null
+     */
+    public $formModel = null;
+
+    /**
      * ID of the contact module. You maybe have to change this if you configured it with another id
      *
      * @var string
@@ -45,18 +52,23 @@ class ContactForm extends Widget
             return '';
         }
 
-        // create form model instance
-        $model = Yii::createObject(ContactFormModel::class);
-        $model->setAttributes(['contact_template_id' => $contactTemplate->id]);
-        if ($contactTemplate->captcha === 1) {
-            $model->setScenario(ContactFormModel::SCENARIO_CAPTCHA);
+        if (empty($this->formModel)) {
+            // create form model instance
+            $model = Yii::createObject(ContactFormModel::class);
+            $model->setAttributes(['contact_template_id' => $contactTemplate->id]);
+            if ($contactTemplate->captcha === 1) {
+                $model->setScenario(ContactFormModel::SCENARIO_CAPTCHA);
 
+            }
+        } else {
+            // Use form model if set
+            $model = $this->formModel;
         }
 
 
         return $this->render('contact-form', [
             'model' => $model,
-            'submitUrl' => Url::to(['/' . $this->contactModuleId . '/default/index', 'schema' => $this->schemaName]),
+            'submitUrl' => Url::to(['/' . $this->contactModuleId . '/default/form', 'schema' => $this->schemaName]),
             'captchaUrl' => '/' . $this->contactModuleId . '/default/captcha',
             'contactTemplate' => $contactTemplate,
             'schemaData' => Json::decode($contactTemplate->form_schema),
