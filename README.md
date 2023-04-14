@@ -135,6 +135,14 @@ It uses a particular format for colors but the last 6 characters follow the css 
 <div class="alert alert-success">{{ t('twig-widget', 'Thank you for your message') }}</div>
 ```
 
+### Contact form widgets twig example
+
+```twig
+{{ use('dmstr/modules/contact/widgets/ContactForm') }}
+
+{{ contact_form_widget({schemaName: schemaName}) }}
+```
+
 ### Settings schema
 
 ```json
