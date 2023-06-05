@@ -14,6 +14,8 @@ use Yii;
  * @property string $from_email
  * @property string $reply_to_email
  * @property string $to_email
+ * @property string $return_path
+ * @property string $reply_to_schema_property
  * @property string $email_subject
  * @property integer $captcha
  * @property string $form_schema
@@ -44,7 +46,7 @@ abstract class ContactTemplate extends \yii\db\ActiveRecord
             [['captcha'], 'integer'],
             [['form_schema'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
-            [['name', 'from_email', 'reply_to_email', 'to_email', 'email_subject'], 'string', 'max' => 255],
+            [['name', 'from_email', 'reply_to_email', 'to_email', 'return_path', 'email_subject', 'reply_to_schema_property'], 'string', 'max' => 255],
             [['name'], 'unique']
         ];
     }
@@ -60,6 +62,8 @@ abstract class ContactTemplate extends \yii\db\ActiveRecord
             'from_email' => Yii::t('models', 'From Email'),
             'reply_to_email' => Yii::t('models', 'Reply To Email'),
             'to_email' => Yii::t('models', 'To Email'),
+            'return_path' => Yii::t('models', 'Return Path'),
+            'reply_to_schema_property' => Yii::t('models', 'Reply To Schema Property'),
             'email_subject' => Yii::t('models', 'Email Subject'),
             'captcha' => Yii::t('models', 'Captcha'),
             'form_schema' => Yii::t('models', 'Form Schema'),

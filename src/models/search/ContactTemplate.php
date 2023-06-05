@@ -27,7 +27,7 @@ class ContactTemplate extends ContactTemplateModel
 	public function rules() {
 		return [
 			[['id'], 'integer'],
-			[['name', 'from_email', 'reply_to_email', 'to_email', 'email_subject', 'form_schema', 'created_at', 'updated_at'], 'safe'],
+			[['name', 'from_email', 'reply_to_email', 'to_email', 'email_subject', 'form_schema', 'return_path', 'reply_to_schema_property','created_at', 'updated_at'], 'safe'],
 		];
 	}
 
@@ -75,7 +75,9 @@ class ContactTemplate extends ContactTemplateModel
 		->andFilterWhere(['like', 'from_email', $this->from_email])
 		->andFilterWhere(['like', 'reply_to_email', $this->reply_to_email])
 		->andFilterWhere(['like', 'to_email', $this->to_email])
-		->andFilterWhere(['like', 'email_subject', $this->email_subject])
+        ->andFilterWhere(['like', 'email_subject', $this->email_subject])
+        ->andFilterWhere(['like', 'return_path', $this->return_path])
+        ->andFilterWhere(['like', 'reply_to_schema_property', $this->reply_to_schema_property])
 		->andFilterWhere(['like', 'form_schema', $this->form_schema]);
 
 		return $dataProvider;

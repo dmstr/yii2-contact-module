@@ -8,6 +8,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\Expression;
 use yii\helpers\Json;
+use yii\validators\EmailValidator;
 
 /**
  * This is the model class for table "app_dmstr_contact_log".
@@ -53,13 +54,31 @@ class ContactLog extends BaseContactLog
     public function sendMessage()
     {
 
+        $validator = new EmailValidator();
 
         $contactTemplate = $this->contactTemplate;
 
+        $data = Json::decode($this->json);
+
         $message = Yii::$app->mailer->compose();
         $message->setFrom($contactTemplate->from_email);
+        // if reply_to_email is set in template we always use this, will be validated in template model
         if (!empty($contactTemplate->reply_to_email)) {
             $message->setReplyTo($contactTemplate->reply_to_email);
+        } else {
+            # check and set optional Reply-To Header from schema property if set in schema and is valid email address
+            $reply_to_property_value = $this->getReplyToFromSchemaData($contactTemplate->reply_to_schema_property, $data);
+            if ((!empty($reply_to_property_value)) && ($validator->validate($reply_to_property_value))){
+                $message->setReplyTo($reply_to_property_value);
+            }
+        }
+
+        # set optional ReturnPath Header, as setReturnPath() is not required by the yii MessageInterface,
+        # we first check that Method exists
+        if (method_exists($message, 'setReturnPath')) {
+            if ((!empty($contactTemplate->return_path)) && ($validator->validate($contactTemplate->return_path))) {
+                $message->setReturnPath($contactTemplate->return_path);
+            }
         }
 
         $to = array_filter(array_map('trim', explode(',', $contactTemplate->to_email)));
@@ -71,6 +90,31 @@ class ContactLog extends BaseContactLog
         }
 
         return $message->send();
+    }
+
+    protected function getReplyToFromSchemaData($schema_property_name, $data)
+    {
+        #Yii::debug($schema_property_name);
+
+        // recursive property name
+        if (preg_match('#\w+\.\w+#', $schema_property_name)) {
+            $keyParts = explode('.', $schema_property_name);
+            $checked = $data;
+            foreach ($keyParts as $key) {
+                #Yii::debug('check: ' . $key);
+                if (empty($checked[$key])) {
+                    return null;
+                }
+                $checked = $checked[$key];
+            }
+            return $checked;
+        }
+
+        // simple property name
+        if (!empty($data[$schema_property_name])) {
+            return $data[$schema_property_name];
+        }
+        return null;
     }
 
     /**
