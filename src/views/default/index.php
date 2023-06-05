@@ -1,6 +1,7 @@
 <?php
 
 use dmstr\modules\contact\models\ContactLog;
+use dmstr\modules\contact\models\ContactTemplate;
 use dmstr\modules\prototype\widgets\TwigWidget;
 
 /**
@@ -12,7 +13,7 @@ use dmstr\modules\prototype\widgets\TwigWidget;
 
 <?= TwigWidget::widget(
     [
-        'key' => 'contact:' . $schema,
+        'key' => ContactTemplate::TMPL_PREFIX . $schema,
         'params' => [
             'model' => $model,
             'schema' => $schemaData,

@@ -2,16 +2,23 @@
 
 Navigate to `/contact/crud/contact-template` to create a new form template.
 
-* Name: a unique name, e.g. 'reservation'
-* From Email: valid email
-* To Email: valid email
-* Captcha: this tells the contact module that a captcha will be used and that it has to validated against it (sets model scenario to captcha)
-* Form Schema: json-schema used to build a form with `dmstr/jsoneditor/JsonEditorWidget` (For more information about schema see examples on: https://github.com/json-editor/json-editor 
-)
+| property | required | description                                                                                                                                                                 |
+| ---------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Name | yes | a unique name, e.g. 'reservation'                                                                                                                                           |
+| From Email | yes | valid email used as 'From:' header                                                                                                                                          |
+| To Email | yes | one or more valid email addresses (comma separated) used as 'To:' header                                                                                                    |
+| Reply To Email | no | optional, valid email. Use this if you want to set 'Reply-To:' header to a fixed address for ALL mails. If set 'Reply to Schema Property' will be irgnored!                 |
+| Reply to Schema Property | no | can be used to define which property from schema should be used (if valid mail!) as 'Reply-To:' header. If 'Reply To Email' is set to a fixed address, this will be ignored |
+| Return Path | no | if set and is a valid email, this will be used as 'Return-Path:' header where bounce Mails will be send to. Handle with care                                                |
+| Captcha | no | this tells the contact module that a captcha will be used and that it has to validated against it (sets model scenario to captcha). Captcha widget is required in twig!     |
+| Form Schema | yes | json-schema used to build a form with `dmstr/jsoneditor/JsonEditorWidget` (For more information about schema see examples on: https://github.com/json-editor/json-editor)   |
 
-## conventions:
+## Upgrade hints:
 
-* if you have a property reply_to in your schema and send valid email address as value, this will be used as Reply-To: header in message
+- If the form was build with version <= 1.0.0 there was the convention, that property reply_to in your schema was used as 'Reply-To:' header in message.
+- this "magick" is removed! You must now set 'Reply to Schema Property' to 'reply_to' to get the same behavior!
+
+
 
 ## Twig templates (Views)
 
@@ -128,6 +135,14 @@ It uses a particular format for colors but the last 6 characters follow the css 
 <div class="alert alert-success">{{ t('twig-widget', 'Thank you for your message') }}</div>
 ```
 
+### Contact form widgets twig example
+
+```twig
+{{ use('dmstr/modules/contact/widgets/ContactForm') }}
+
+{{ contact_form_widget({schemaName: schemaName}) }}
+```
+
 ### Settings schema
 
 ```json
@@ -136,16 +151,6 @@ It uses a particular format for colors but the last 6 characters follow the css 
   "type": "object",
   "format": "grid",
   "properties": {
-    "reply_to": {
-      "type": "string",
-      "template": "{{email}}",
-      "options": {
-        "hidden": true
-      },
-      "watch": {
-        "email": "Email"
-      }
-    },
     "Company": {
       "type": "string",
       "minLength": 3,
@@ -269,17 +274,3 @@ It uses a particular format for colors but the last 6 characters follow the css 
 
 To enable the export feature add *kartik\grid\Module* to your project modules
 
-## Giiant CRUDs
-
-```bash
-yii giiant-batch \
-        --tables=app_dmstr_contact_template,app_dmstr_contact_log \
-        --tablePrefix=app_dmstr_ \
-        --modelNamespace=dmstr\\modules\\contact\\models \
-        --modelQueryNamespace=dmstr\\modules\\contact\\models\\query \
-        --crudViewPath=@dmstr/modules/contact/views/crud \
-        --crudControllerNamespace=dmstr\\modules\\contact\\controllers\\crud \
-        --crudSearchModelNamespace=dmstr\\modules\\contact\\models\\search \
-        --useTimestampBehavior=0 \
-        --interactive=0 
-```

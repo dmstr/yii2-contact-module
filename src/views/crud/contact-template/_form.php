@@ -61,20 +61,20 @@ use yii\helpers\StringHelper;
                 dmstr\modules\contact\models\ContactTemplate::optscaptcha()
             ); ?>
 
-            <!-- attribute form_schema -->
-            <?php echo $form->field($model, 'form_schema')->textarea(['rows' => 6]) ?>
-
-            <!-- attribute created_at -->
-            <?php echo $form->field($model, 'created_at')->textInput() ?>
-
-            <!-- attribute updated_at -->
-            <?php echo $form->field($model, 'updated_at')->textInput() ?>
-
             <!-- attribute reply_to_email -->
             <?php echo $form->field($model, 'reply_to_email')->textInput(['maxlength' => true]) ?>
 
+            <!-- attribute reply_to_schema_property -->
+            <?php echo $form->field($model, 'reply_to_schema_property')->textInput(['maxlength' => true]) ?>
+
+            <!-- attribute return_path -->
+            <?php echo $form->field($model, 'return_path')->textInput(['maxlength' => true]) ?>
+
             <!-- attribute email_subject -->
             <?php echo $form->field($model, 'email_subject')->textInput(['maxlength' => true]) ?>
+
+            <!-- attribute form_schema -->
+            <?php echo $form->field($model, 'form_schema')->textarea(['rows' => 6]) ?>
 
             <?php echo AccessInput::widget([
                 'form' => $form,
