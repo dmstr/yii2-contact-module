@@ -35,6 +35,7 @@ use yii\i18n\Formatter;
         echo ExportMenu::widget(
             [
                 'dataProvider' => $dataProvider,
+                'folder' => '@runtime/contact-export',
                 'columns' => $columns,
                 'formatter' => ['class' => Formatter::class, 'nullDisplay' => ''],
                 'folder' => $folder,
