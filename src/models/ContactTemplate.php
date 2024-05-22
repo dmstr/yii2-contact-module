@@ -40,6 +40,11 @@ class ContactTemplate extends BaseContactTemplate
         $rules = parent::rules();
         $rules['single_mail_value'] = [['from_email', 'reply_to_email', 'return_path'], 'email', 'skipOnEmpty' => true];
         $rules['multi_mail_value'] = [['to_email'], 'validateMultiMailValues', 'skipOnEmpty' => true];
+        $rules['strip-tags'] = [['name', 'email_subject', 'reply_to_schema_property'], 'filter', 'filter' => function ($value) {
+            return trim(strip_tags($value));
+        },
+            'skipOnEmpty' => true,
+            'skipOnArray' => true];
         return $rules;
     }
 
@@ -85,7 +90,7 @@ class ContactTemplate extends BaseContactTemplate
         }
 
         foreach ($values as $value) {
-            if (! $emailValidator->validate($value)) {
+            if (!$emailValidator->validate($value)) {
                 $this->addError($attribute, Yii::t('yii', '{attribute} is not a valid email address.', ['attribute' => $this->getAttributeLabel($attribute)]));
                 return false;
             }
