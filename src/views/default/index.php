@@ -3,6 +3,7 @@
 use dmstr\modules\contact\models\ContactLog;
 use dmstr\modules\contact\models\ContactTemplate;
 use dmstr\modules\prototype\widgets\TwigWidget;
+use yii\helpers\Html;
 
 /**
  * @var $schema string
@@ -13,7 +14,7 @@ use dmstr\modules\prototype\widgets\TwigWidget;
 
 <?= TwigWidget::widget(
     [
-        'key' => ContactTemplate::TMPL_PREFIX . $schema,
+        'key' => ContactTemplate::TMPL_PREFIX . Html::encode($schema),
         'params' => [
             'model' => $model,
             'schema' => $schemaData,
