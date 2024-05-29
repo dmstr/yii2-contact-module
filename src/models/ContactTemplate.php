@@ -38,19 +38,6 @@ class ContactTemplate extends BaseContactTemplate
         ];
         return $behaviors;
     }
-    
-    public function rules()
-    {
-        $rules = parent::rules();
-        $rules['single_mail_value'] = [['from_email', 'reply_to_email', 'return_path'], 'email', 'skipOnEmpty' => true];
-        $rules['multi_mail_value'] = [['to_email'], 'validateMultiMailValues', 'skipOnEmpty' => true];
-        $rules['strip-tags'] = [['name', 'email_subject', 'reply_to_schema_property'], 'filter', 'filter' => function ($value) {
-            return trim(strip_tags($value));
-        },
-            'skipOnEmpty' => true,
-            'skipOnArray' => true];
-        return $rules;
-    }
 
     public function attributeHints()
     {
@@ -96,6 +83,11 @@ class ContactTemplate extends BaseContactTemplate
         ];
         $rules['single_mail_value'] = [['from_email', 'reply_to_email', 'return_path'], 'email', 'skipOnEmpty' => true];
         $rules['multi_mail_value'] = [['to_email'], 'validateMultiMailValues', 'skipOnEmpty' => true];
+        $rules['strip-tags'] = [['name', 'email_subject', 'reply_to_schema_property'], 'filter', 'filter' => function ($value) {
+            return trim(strip_tags($value));
+        },
+            'skipOnEmpty' => true,
+            'skipOnArray' => true];
         return $rules;
     }
 
