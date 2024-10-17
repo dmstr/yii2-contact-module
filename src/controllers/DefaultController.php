@@ -70,8 +70,8 @@ class DefaultController extends Controller
             'width' => $width,
             'height' => $height,
             'offset' => $offset,
-            'backColor' => hexdec($backColor),
-            'foreColor' => hexdec($foreColor)
+            'backColor' => is_string($backColor) ? hexdec($backColor) : '0x333333',
+            'foreColor' => is_string($foreColor) ? hexdec($foreColor) : '0xFFFFFF'
         ];
         $actions['index'] = [
             'class' => SubmitAction::class
