@@ -96,6 +96,11 @@ class ContactLog extends BaseContactLog
     {
         #Yii::debug($schema_property_name);
 
+        // value is nullable so we ignore it if it is null. Using empty here to catch empty strings too.
+        if (empty($schema_property_name)) {
+            return null;
+        }
+
         // recursive property name
         if (preg_match('#\w+\.\w+#', $schema_property_name)) {
             $keyParts = explode('.', $schema_property_name);
